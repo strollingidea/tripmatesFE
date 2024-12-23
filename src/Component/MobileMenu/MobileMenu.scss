@@ -1,0 +1,176 @@
+#accordionsection {
+    width: 100%;
+    max-width: 450px;
+    background-color: #1f1f1f;
+    height: 100vh;
+    box-sizing: border-box;
+    font-family: Roboto, Arial, Helvetica, sans-serif;
+    line-height: 1.2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: scroll;
+    animation: slideFromSide 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    scrollbar-width: none;
+    display: none;
+    @media (max-width:768px){
+      display: block;
+    }
+    @keyframes slideFromSide {
+      0% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    .closingBtn {
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      height: 75px;
+      gap: 3px;
+      background: repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.08),
+          rgba(255, 255, 255, 0.08) 2px,
+          transparent 2px,
+          transparent 7px
+        ),
+        transparent;
+      :hover {
+        background-color: #252525;
+      }
+      .searchingBar{
+          border: 1px solid #252525;
+          display: flex;
+          justify-content: left;
+          align-items: center;
+          gap: 8px;
+          border-radius: 30px; 
+          padding: 8px 20px;
+          // width: 350px;
+          width: 100%;
+          position: relative;
+          margin-inline: auto;
+          background-color: #000;
+          i{
+              cursor: pointer;
+          }
+          input{          
+              outline: none;           
+              background: transparent; 
+              font-size: 16px;        
+              border: none;
+              width: 100%;            
+              padding: 5px 10px;
+              color: #fff;
+              font-size: 18px;
+              text-transform: capitalize;
+          }
+      }
+      label {
+        align-content: center;
+        border-radius: 50%;
+        i {
+          cursor: pointer;
+          font-size: 23px;
+          display: flex;
+          align-items: center;
+          padding: 6px 15px;
+          border-radius: 50%;
+        }
+      }
+    }
+    .accordion {
+      width: 100%;
+      // height: 100%;
+      background-color: #1f1f1f;
+      .accordion-item {
+        padding: 8px 16px;
+  
+        .accordion-title {
+          padding: 8px 16px;
+          display: flex;
+          justify-content: space-between;
+          cursor: pointer;
+          //trial
+          opacity: 0.5;
+          &:hover {
+            opacity: 1;
+          }
+          &.accordion-title.active {
+            color: #f5c518;
+            opacity: 1;
+          }
+          .accordion-heading {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+  
+            span.headingTitle {
+              width: 100%;
+              opacity: 1 !important;
+            }
+            span {
+              height: 21px;
+              width: 21px;
+  
+              i {
+                // font-size: 20px;
+                width: 100%;
+                height: 100%;
+              }
+            }
+          }
+        }
+        .accordion-content {
+          .accordion-list {
+            border-bottom: 1px solid #353535;
+            :hover {
+              background-color: #252525;
+            }
+            .accordion-list-item {
+              padding: 8px 16px 8px 52px;
+              font-weight: 600;
+              cursor: pointer;
+              text-decoration: none;
+  
+              a {
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+    .proo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 30px;
+      margin-top: 1rem;
+      
+      .proL{
+          a{
+              svg{
+                  g{
+                      fill: #fff;
+                  }
+              }
+          }
+      }
+      .proR{
+          a{
+              svg{
+  
+                  
+                  color: rgb(255,255,255,0.5);
+              }
+          }
+      }
+    }
+  }
+  

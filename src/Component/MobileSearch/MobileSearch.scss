@@ -1,0 +1,86 @@
+#mobileSearch {
+    padding: 4px 8px; 
+    font-family: Roboto,Arial, Helvetica, sans-serif;
+    align-content: center;
+    background-color: #1f1f1f;
+    display: none;
+    line-height: 1.2;
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    @media (max-width: 600px) {
+      display: block;
+    }
+    .mobileSearchBar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      background-color: #1f1f1f;
+      animation: slideFromTop 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+      @keyframes slideFromTop {
+          0% {
+              transform: translateY(-100%); 
+              opacity: 0;
+          }
+          100% {
+              transform: translateY(0); 
+              opacity: 1;
+          }
+          
+      }
+  
+      .select {
+          padding: 0px 4px 0px 12px;
+          select{
+              background-color: transparent;
+              color: #fff;
+              align-content: center;
+              outline: none;
+              border: none;
+          }
+      }
+      .searchInput {
+          width: 90%;
+          padding: 8px 16px 8px 12px;
+          input {
+          padding: 10px 8px;
+          width: 100%;
+          outline: none;
+          border: none;
+          appearance: none;
+          background-color: transparent;
+          color: #fff;
+          font-size: 18px;
+          text-transform: capitalize;
+          border-left: 1px solid #000;
+          ::placeholder{
+              font-size: 20px;
+              color: #1f1f1f;
+          }
+        }
+      }
+      .exitBtn {
+        align-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+      //   transition: all 1s ease-in;
+          span {
+              align-content: center;
+              :hover{
+                  background-color: rgb(255,255,255,0.1);
+                }
+              i {
+                  margin: 4px;
+              padding: 10px 14px;
+              font-size: 24px;
+              border-radius: 50%;
+              
+          }
+        }
+      }
+    }
+  }
+  

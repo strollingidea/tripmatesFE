@@ -1,0 +1,60 @@
+#secondBar{
+    padding: 10px 0;
+    font-family: Roboto, Arial, Helvetica, sans-serif;
+    background-color: #FFCC00;
+    text-decoration: none;
+    text-transform: capitalize;
+    line-height: 1.2;
+        .secondNavbar{
+            max-width: 1280px;
+            margin-inline: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            .secondNavbarmenu{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
+            .option{
+                // background-color: #000;
+                padding: 8px 12px ;
+                border-radius: 50px;
+                // width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                cursor: pointer;
+                a{
+                    color: #181818;
+                    font-size: 14px;
+                    font-weight: 600;
+                    font-family: sans-serif;
+                    text-transform: uppercase;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    white-space: nowrap;
+                    span{
+                        font-size: 10px;
+                    }
+                }
+            }
+    
+            .select{
+                select{
+                    outline: none;
+                    border: none;
+                    background-color: #FFCC00;
+                    font-size: 16px;
+                }
+            }
+    
+            .faq{
+                a{
+                    color: #000;
+                }
+            }
+        }
+    }
