@@ -40,7 +40,25 @@ const PlanTrip = () => {
               <h3>Vikas Jain</h3>
               <h4>Admin</h4> 
             </li>
+            <li>
+              <h3>Subhan-ur-Rehman</h3>
+              <h4>Remove</h4> 
+            </li>
+            <li>
+              <h3>Tanuj Kumar</h3>
+              <h4>Remove</h4> 
+            </li>
+            <li>
+              <h3>Aman Patel</h3>
+              <h4>Remove</h4> 
+            </li>
           </ul>
+        </div>
+
+        <div className='floatctastart'>
+          <Link to="/tripcreated">
+            Create your trip
+          </Link>
         </div>
 
       </div>
