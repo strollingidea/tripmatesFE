@@ -21,7 +21,7 @@ const TripCreated = () => {
                 <Tabs/>
             </div>
 
-            <div className='floatctastart'>
+            <div className='floataddlist'>
                 <Link to="/tripcreated">
                     Add List
                 </Link>

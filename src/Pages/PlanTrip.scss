@@ -4,6 +4,8 @@
     margin: 0 auto;
     padding: 30px;
     height: calc(100vh - 60px);
+    position: relative;
+    overflow-y: scroll;
 }
 .Head{
     display: flex;
@@ -79,6 +81,26 @@
     width: 100%;
     max-width: calc(560px - 60px);
     border-radius: 6px;
+    font-size: 24px;
+    font-weight: 500;
+    cursor: pointer;
+    a{
+        color: #333030;
+        text-decoration: none;
+    }
+}
+
+.floataddlist{
+    background-color: #FFC300;
+    padding: 20px 30px;
+    text-align: center;
+    position: fixed;
+    bottom: 30px;
+    margin: 0 auto;
+    margin-left: 300px;
+    width: 150px;
+    max-width: calc(560px - 60px);
+    border-radius: 50px;
     font-size: 24px;
     font-weight: 500;
     cursor: pointer;
