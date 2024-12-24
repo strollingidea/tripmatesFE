@@ -22,16 +22,25 @@ const PlanTrip = () => {
             <div className="date-range-picker">
                 <label className="label">Dates (optional)</label>
                 <div className="date-inputs">
-                    <div className="date-input">
-                    <span className="calendar-icon">📅</span>
-                    <span className="date-text">Dec 19</span>
+                    <div className="date-input" style={{borderRight:"1px solid #000", marginRight:"15px"}}>
+                      <span className="calendar-icon">📅</span>
+                      <span className="date-text">Start Date</span>
                     </div>
                     <div className="date-input">
-                    <span className="calendar-icon">📅</span>
-                    <span className="date-text">Dec 25</span>
+                      <span className="calendar-icon">📅</span>
+                      <span className="date-text">End Date</span>
                     </div>
                 </div>
             </div>
+        </div>
+        <div className='addmembers'>
+          <h2>+ Add Tripmates</h2>
+          <ul>
+            <li>
+              <h3>Vikas Jain</h3>
+              <h4>Admin</h4> 
+            </li>
+          </ul>
         </div>
 
       </div>
