@@ -1,6 +1,7 @@
 .tabs {
     .tab-buttons {
       display: flex;
+      border-bottom: 1px solid #e6e6e6;
       button {
         flex: 1;
         padding: 10px;
@@ -8,14 +9,16 @@
         border: none;
         background: #f4f4f4;
         transition: background 0.3s ease;
+        font-size: 18px;
+        color: #888888;
   
         &.active {
-          background: #007bff;
-          color: #fff;
+          color: #494949;
+          border-bottom: 2px solid #ffc300;
         }
   
         &:hover {
-          background: #ddd;
+          // background: #ddd;
         }
       }
     }

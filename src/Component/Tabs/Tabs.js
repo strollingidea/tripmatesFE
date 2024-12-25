@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './Tabs.scss'
 import Overview from '../Overview/Overview';
+import Itinerary from '../Itinerary.js/Itinerary';
 
 const Tabs = () => {
     const [activeTab, setActivetab] = useState("tab1")
@@ -10,7 +11,7 @@ const Tabs = () => {
           case "tab1":
             return <><Overview/></>;
           case "tab2":
-            return <><Overview/></>;
+            return <><Itinerary/></>;
           case "tab3":
             return <><Overview/></>;
           default:

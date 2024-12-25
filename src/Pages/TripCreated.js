@@ -23,7 +23,7 @@ const TripCreated = () => {
 
             <div className='floataddlist'>
                 <Link to="/tripcreated">
-                    Add List
+                    + Add List
                 </Link>
             </div>
 
