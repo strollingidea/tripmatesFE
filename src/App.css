@@ -48,6 +48,9 @@ body{
     .calendar-icon {
       font-size: 16px;
       color: #888;
+      position: absolute;
+      right: 20px;
+      top: 24px;
     }
 
     .date-text {
@@ -56,6 +59,7 @@ body{
       font-weight: 500;
       padding-top: 4px;
       padding-left: 5px;
+      position: relative;
     }
   }
 }
