@@ -4,6 +4,7 @@ import Backarrow from '../Images/backarrow.png'
 import { Link, useNavigate } from 'react-router-dom'
 import {useFormik} from 'formik'
 import { DetailsSchema } from '../Component/Schema/DetailsSchema'
+import TripmatesPop from '../Component/PopModals/TripmatesPop'
 
 
 const PlanTrip = () => {
@@ -113,6 +114,7 @@ const PlanTrip = () => {
         </div>
         <div className='addmembers'>
           <h2>+ Add Tripmates</h2>
+          <TripmatesPop/>
           <ul>
             <li>
               <h3>Vikas Jain</h3>
