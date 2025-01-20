@@ -11,6 +11,9 @@ const PlanTrip = () => {
   // const [destination , setDestination] = useState("");
   // const [startDate , setStartDate] = useState("");
   // const [endDate , setEndDate] = useState("");
+  const [addTeammates, setaddTeammates] = useState(false)
+  const [dataTeammates, setdataTeammates] = useState('')
+ 
   const navigate = useNavigate()
 
   const inputRef = useRef();
@@ -25,6 +28,8 @@ const PlanTrip = () => {
   // const handleSubmit = () =>{
   //   console.log(destination, startDate, endDate)
   // }
+
+  
 
   let initialValues = {
     destination : "",
@@ -113,15 +118,18 @@ const PlanTrip = () => {
             </div>
         </div>
         <div className='addmembers'>
-          <h2>+ Add Tripmates</h2>
-          <TripmatesPop/>
+          <h2 onClick={()=>setaddTeammates(true)}>+ Add Tripmates</h2>
+         { console.log(addTeammates,"hhhhhhhhhhhhhhhhhhhhhh")}
+          {/* {addTeammates ?<TripmatesPop/> : ""} */}
+          {addTeammates && (<TripmatesPop setaddTeammates={setaddTeammates} setdataTeammates ={setdataTeammates}   />)}
           <ul>
             <li>
+              
               <h3>Vikas Jain</h3>
               <h4>Admin</h4> 
             </li>
             <li>
-              <h3>Subhan-ur-Rehman</h3>
+            <h3>{dataTeammates}</h3>
               <h4>Remove</h4> 
             </li>
             <li>
