@@ -1,29 +1,18 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
 
-const TripmatesPop = ({setaddTeammates, setdataTeammates}) => {
-
-    const [tripmatesData, settripmatesData] = useState('') 
-    
-
-    const handlechange=(event)=>{
-        settripmatesData(event.target.value)
-       
-    }
-
-    const handleaddTripmate =(e)=>{
-        
-        setdataTeammates(tripmatesData)
-        setaddTeammates(false)
-    }
+const TripmatesPop = () => {
 
   return (
     <>
         <TripmatespopDrawer>
             <DrawerHeading>Add Tripmates</DrawerHeading>
-            <DrawerInput type='text' value={tripmatesData} onChange={handlechange} placeholder='Tripmates Name'/>
-            <TripmatesSubmit onClick={handleaddTripmate()}>Add Tripmate</TripmatesSubmit>
-            <div onClick={()=>{setaddTeammates(false)}}>close</div>
+            <DrawerInput type='text'
+                placeholder='Tripmates Name'
+            />
+            <TripmatesSubmit
+            >Add Tripmate</TripmatesSubmit>
+            <div>close</div>
         </TripmatespopDrawer>
     </>
   )
