@@ -1,7 +1,15 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
 
-const TripmatesPop = () => {
+const TripmatesPop = ({onClose, adtripmate}) => {
+    const [Inputvalue, setInputValue] = useState();
+    
+
+    const tripmateHandler = ()=>{
+        adtripmate(Inputvalue)
+        setInputValue("");
+        onClose();
+    }
 
   return (
     <>
@@ -9,10 +17,14 @@ const TripmatesPop = () => {
             <DrawerHeading>Add Tripmates</DrawerHeading>
             <DrawerInput type='text'
                 placeholder='Tripmates Name'
+                value={Inputvalue}
+                onChange={(e)=>setInputValue(e.target.value)}
             />
-            <TripmatesSubmit
-            >Add Tripmate</TripmatesSubmit>
-            <div>close</div>
+            <TripmatesSubmit onClick={tripmateHandler}>
+                Add Tripmate
+            </TripmatesSubmit>
+            
+            <div onClick={onClose}>close</div>
         </TripmatespopDrawer>
     </>
   )
@@ -29,14 +41,14 @@ const TripmatespopDrawer = styled.div`
     flex-direction: column;
     gap: 10px;
     background-color: #fff;
-    width: 100%;
+    /* width: 100%; */
     max-width: 520px;
     position: fixed;
     bottom: 0;
     margin: 0 auto;
     left: 0;
     right: 0;
-    padding: 50px;
+    padding: 20px;
     border-radius: 20px 20px 0 0;
     box-shadow: 0px 0px 15px 5px #0000001a;
     z-index: 999999;

@@ -9,12 +9,30 @@ import TripmatesPop from '../Component/PopModals/TripmatesPop'
 
 const PlanTrip = () => {
 
- 
+  const [isPopupOpen, setIsPopupOpen ] = useState(false)
+  const [tripmates, setTripmates] = useState([
+    { name: 'Vikas Jain', role: 'Admin' },
+    { name: 'sushant', role: 'Remove' },
+  ]);
   const navigate = useNavigate()
 
   const inputRef = useRef();
 
-  
+  const adtripmate = (newTripmate) =>{
+   if(newTripmate){
+    setTripmates([...tripmates, {name: newTripmate, role:"Remove"}])
+   }
+  }
+  const handleRemoveTripmate = (index) => {
+    const updatedTripmates = tripmates.filter((_, i) => i !== index);
+    setTripmates(updatedTripmates);
+  };
+  console.log(tripmates,"tripmatestripmates")
+
+  const handlepopup =()=>{
+setIsPopupOpen(!isPopupOpen)
+console.log("kkkkk",isPopupOpen)
+  }
 
   let initialValues = {
     destination : "",
@@ -45,7 +63,7 @@ const PlanTrip = () => {
                 <img src={Backarrow}/>
             </Link>
             <div className='heading'>
-                <h1>Plan a Trip</h1>
+                {/* <h1>Plan a Trip</h1> */}
                 <p>Build an itinerary and map out your upcoming plans</p>
             </div>
         </div>
@@ -103,11 +121,17 @@ const PlanTrip = () => {
             </div>
         </div>
         <div className='addmembers'>
-          <h2>+ Add Tripmates</h2>
-          <TripmatesPop/>
+          <h2 onClick={handlepopup}>+ Add Tripmates</h2>
+          {/* {isPopupOpen && <TripmatesPop onClose = {() => setIsPopupOpen(false)}/>} */}
+          {isPopupOpen && <TripmatesPop onClose = {handlepopup} adtripmate={adtripmate}/>  }
           <ul>
-            <li>
-              
+          {tripmates.map((mate, index) => (
+              <li key={index}>
+                <h3>{mate.name}</h3>
+                <h4 onClick={() => handleRemoveTripmate(index)}>{mate.role}</h4>
+              </li>
+            ))}
+            {/* <li>
               <h3>Vikas Jain</h3>
               <h4>Admin</h4> 
             </li>
@@ -122,7 +146,7 @@ const PlanTrip = () => {
             <li>
               <h3>Aman Patel</h3>
               <h4>Remove</h4> 
-            </li>
+            </li> */}
           </ul>
         </div>
 
