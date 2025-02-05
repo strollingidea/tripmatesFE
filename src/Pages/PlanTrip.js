@@ -46,7 +46,7 @@ console.log("kkkkk",isPopupOpen)
     validationSchema: DetailsSchema,
     onSubmit: (values) => {
       console.log('Form submitted:', values);
-      navigate("/tripcreated")
+      navigate("/tripcreated", {state : {tripData:values , tripmates}})
     }
 
   })
@@ -131,22 +131,7 @@ console.log("kkkkk",isPopupOpen)
                 <h4 onClick={() => handleRemoveTripmate(index)}>{mate.role}</h4>
               </li>
             ))}
-            {/* <li>
-              <h3>Vikas Jain</h3>
-              <h4>Admin</h4> 
-            </li>
-            <li>
-            <h3>sdfgh</h3>
-              <h4>Remove</h4> 
-            </li>
-            <li>
-              <h3>Tanuj Kumar</h3>
-              <h4>Remove</h4> 
-            </li>
-            <li>
-              <h3>Aman Patel</h3>
-              <h4>Remove</h4> 
-            </li> */}
+            
           </ul>
         </div>
 

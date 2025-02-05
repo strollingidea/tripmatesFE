@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import './PlanTrip.scss'
 import Backarrow from '../Images/backarrow.png'
-import { Link } from 'react-router-dom'
 import Tabs from '../Component/Tabs/Tabs'
 
 const TripCreated = () => {
+    const location = useLocation();
+    const { tripData, tripmates } = location.state || {}; 
   return (
     <>
         <div className='container planatrip'>
@@ -13,8 +15,8 @@ const TripCreated = () => {
                     <img src={Backarrow}/>
                 </Link>
                 <div className='heading'>
-                    <h1>Spiti Valley Trip</h1>
-                    <p>Mon, 15 Dec 2024 -- Sat, 20 Dec 2024</p>
+                    <h1>{tripData?.destination || "Spiti Valley Trip"}</h1>
+                    <p>{tripData?.startDate || "Sat, DD MM YYYY"} -- {tripData?.endDate || "Sat, DD MM YYYY"}</p>
                 </div>
             </div>
             <div className=''>

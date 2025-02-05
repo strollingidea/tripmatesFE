@@ -2,25 +2,24 @@ import React from 'react'
 import './Overview.scss'
 import PlacestovisitImg from "../../Images/spiti.jpg"
 import AddIcon from "../../Images/places-add-icon.png"
+import { useLocation } from 'react-router-dom'
 
 const Overview = () => {
+    const location = useLocation();
+    const {tripmates} = location.state || { tripmates: [] };
   return (
     <>
         <div className='tripmateslist'>
             <h2>Your Tripmates</h2>
             <ul>
-                <li>
-                    <h3>Vikas Jain</h3>
-                    <h4>Admin</h4> 
-                </li>
-                <li>
-                    <h3>Subhan-ur-Rehman</h3>
-                    <h4>Remove</h4> 
-                </li>
-                <li>
-                    <h3>Tanuj Kumar</h3>
-                    <h4>Remove</h4> 
-                </li>
+                {tripmates.map((mate, index) => (
+                    <li key={index}>
+                        <h3>{mate.name}</h3>
+                        <h4>{mate.role}</h4> 
+                    </li>
+                ))}
+                
+                
             </ul>
         </div>
 
