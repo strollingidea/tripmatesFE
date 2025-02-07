@@ -23,7 +23,7 @@ const Overview = () => {
             </ul>
         </div>
 
-        <div className='placestovisitlist'>
+        {/* <div className='placestovisitlist'>
             <h2>Places you want to visit</h2>
             <input type='text' placeholder='Add places you want to visit'/>
             <img src={AddIcon} className='addabso'/>
@@ -49,7 +49,7 @@ const Overview = () => {
                     <h3>Spiti Valley</h3>
                 </li>
             </ul>
-        </div>
+        </div> */}
     </>
   )
 }

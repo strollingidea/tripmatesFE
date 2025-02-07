@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import './PlanTrip.scss'
 import Backarrow from '../Images/backarrow.png'
 import { Link, useNavigate } from 'react-router-dom'
@@ -10,22 +10,26 @@ import TripmatesPop from '../Component/PopModals/TripmatesPop'
 const PlanTrip = () => {
 
   const [isPopupOpen, setIsPopupOpen ] = useState(false)
-  const [tripmates, setTripmates] = useState([
-    { name: 'Vikas Jain', role: 'Admin' },
-    { name: 'sushant', role: 'Remove' },
-  ]);
+  const [tripmates, setTripmates] = useState(() => {
+    // Load initial tripmates from Local Storage if available
+    const savedTripmates = localStorage.getItem('tripmates');
+    return savedTripmates ? JSON.parse(savedTripmates) : [];
+  });
   const navigate = useNavigate()
 
   const inputRef = useRef();
 
   const adtripmate = (newTripmate) =>{
    if(newTripmate){
-    setTripmates([...tripmates, {name: newTripmate, role:"Remove"}])
+    const updatedTripmates = [...tripmates, { name: newTripmate, role: "Remove" }];
+    setTripmates(updatedTripmates);
+      localStorage.setItem('tripmates', JSON.stringify(updatedTripmates));
    }
   }
   const handleRemoveTripmate = (index) => {
     const updatedTripmates = tripmates.filter((_, i) => i !== index);
     setTripmates(updatedTripmates);
+    localStorage.setItem('tripmates', JSON.stringify(updatedTripmates));
   };
   console.log(tripmates,"tripmatestripmates")
 
@@ -46,12 +50,21 @@ console.log("kkkkk",isPopupOpen)
     validationSchema: DetailsSchema,
     onSubmit: (values) => {
       console.log('Form submitted:', values);
+      const tripData = { ...values, tripmates };
+      localStorage.setItem('tripData', JSON.stringify(tripData));
       navigate("/tripcreated", {state : {tripData:values , tripmates}})
     }
 
   })
 
   let { values, handleSubmit } = formik;
+
+  useEffect(() => {
+    const savedData = localStorage.getItem('tripData');
+    if (savedData) {
+      formik.setValues(JSON.parse(savedData));
+    }
+  }, []);
 
   
   return (
