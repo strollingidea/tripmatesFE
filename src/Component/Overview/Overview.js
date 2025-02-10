@@ -15,7 +15,7 @@ const Overview = () => {
                 {tripmates.map((mate, index) => (
                     <li key={index}>
                         <h3>{mate.name}</h3>
-                        <h4>{mate.role}</h4> 
+                        <h4 onClick={() => handleRemoveTripmate(index)}>{mate.role}</h4> 
                     </li>
                 ))}
                 

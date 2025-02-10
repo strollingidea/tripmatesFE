@@ -4,7 +4,7 @@ import Overview from '../Overview/Overview';
 import Itinerary from '../Itinerary.js/Itinerary';
 import Budget from '../Budget/Budget';
 
-const Tabs = () => {
+const Tabs = ({tripData}) => {
     const [activeTab, setActivetab] = useState("tab1")
 
     const renderContent = () => {
@@ -12,7 +12,7 @@ const Tabs = () => {
           case "tab1":
             return <><Overview/></>;
           case "tab2":
-            return <><Itinerary/></>;
+            return <><Itinerary tripData={tripData}/></>;
           case "tab3":
             return <><Budget/></>;
           default:

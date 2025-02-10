@@ -27,7 +27,7 @@ const TripCreated = () => {
                 </div>
             </div>
             <div className=''>
-                <Tabs/>
+                <Tabs tripData={tripData}/>
             </div>
 
             <div className='floataddlist'>
