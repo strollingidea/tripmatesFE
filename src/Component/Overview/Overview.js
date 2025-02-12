@@ -4,6 +4,7 @@ import PlacestovisitImg from "../../Images/spiti.jpg"
 import AddIcon from "../../Images/places-add-icon.png"
 import { useLocation } from 'react-router-dom'
 
+
 const Overview = () => {
     const location = useLocation();
     const {tripmates} = location.state || { tripmates: [] };
@@ -23,6 +24,8 @@ const Overview = () => {
             </ul>
         </div>
 
+
+        
         {/* <div className='placestovisitlist'>
             <h2>Places you want to visit</h2>
             <input type='text' placeholder='Add places you want to visit'/>
