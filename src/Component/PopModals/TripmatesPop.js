@@ -1,15 +1,21 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
+import { useDispatch, useSelector } from "react-redux";
+import { addTripmate } from "../../redux/slices/removetripmateSlice";
 
 const TripmatesPop = ({onClose, adtripmate}) => {
-    const [Inputvalue, setInputValue] = useState();
-    
 
-    const tripmateHandler = ()=>{
-        adtripmate(Inputvalue)
-        setInputValue("");
-        onClose();
+    const dispatch = useDispatch();
+    // const tripmates = useSelector((state) => state.tripmates.tripmates);
+    const [newTripmate, setNewTripmate] = useState("");
+
+  const handleAddTripmate = () => {
+    if (newTripmate.trim()) {
+      dispatch(addTripmate(newTripmate));
+      setNewTripmate(""); // Clear input
+      onClose()
     }
+  };
 
   return (
     <>
@@ -17,10 +23,11 @@ const TripmatesPop = ({onClose, adtripmate}) => {
             <DrawerHeading>Add Tripmates</DrawerHeading>
             <DrawerInput type='text'
                 placeholder='Tripmates Name'
-                value={Inputvalue}
-                onChange={(e)=>setInputValue(e.target.value)}
+                value={newTripmate}
+                onChange={(e)=>setNewTripmate(e.target.value)}
             />
-            <TripmatesSubmit onClick={tripmateHandler}>
+            {console.log(newTripmate, "pppppppppp")}
+            <TripmatesSubmit onClick={handleAddTripmate}>
                 Add Tripmate
             </TripmatesSubmit>
             

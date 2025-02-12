@@ -5,38 +5,46 @@ import { Link, useNavigate } from 'react-router-dom'
 import {useFormik} from 'formik'
 import { DetailsSchema } from '../Component/Schema/DetailsSchema'
 import TripmatesPop from '../Component/PopModals/TripmatesPop'
+import { useDispatch, useSelector } from "react-redux";
+import { removeTripmate } from '../redux/slices/removetripmateSlice'
 
 
 const PlanTrip = () => {
 
-  const [isPopupOpen, setIsPopupOpen ] = useState(false)
-  const [tripmates, setTripmates] = useState(() => {
-    // Load initial tripmates from Local Storage if available
-    const savedTripmates = localStorage.getItem('tripmates');
-    return savedTripmates ? JSON.parse(savedTripmates) : [];
-  });
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
 
+  const tripmates = useSelector((state) => state.tripmates.tripmates);
+
+  const [isPopupOpen, setIsPopupOpen ] = useState(false)
+  
+  const navigate = useNavigate()
+  
   const inputRef = useRef();
 
-  const adtripmate = (newTripmate) =>{
-   if(newTripmate){
-    const updatedTripmates = [...tripmates, { name: newTripmate, role: "Remove" }];
-    setTripmates(updatedTripmates);
-      localStorage.setItem('tripmates', JSON.stringify(updatedTripmates));
-   }
-  }
-  const handleRemoveTripmate = (index) => {
-    const updatedTripmates = tripmates.filter((_, i) => i !== index);
-    setTripmates(updatedTripmates);
-    localStorage.setItem('tripmates', JSON.stringify(updatedTripmates));
-  };
-  console.log(tripmates,"tripmatestripmates")
+  
+  // const [tripmates, setTripmates] = useState(() => {
+  //   // Load initial tripmates from Local Storage if available
+  //   const savedTripmates = localStorage.getItem('tripmates');
+  //   return savedTripmates ? JSON.parse(savedTripmates) : [];
+  // });
+
+
+  // const adtripmate = (newTripmate) =>{
+  //  if(newTripmate){
+  //   const updatedTripmates = [...tripmates, { name: newTripmate, role: "Remove" }];
+  //   setTripmates(updatedTripmates);
+  //     localStorage.setItem('tripmates', JSON.stringify(updatedTripmates));
+  //  }
+  // }
+  // const handleRemoveTripmate = (index) => {
+  //   const updatedTripmates = tripmates.filter((_, i) => i !== index);
+  //   setTripmates(updatedTripmates);
+  //   localStorage.setItem('tripmates', JSON.stringify(updatedTripmates));
+  // };
 
   const handlepopup =()=>{
-setIsPopupOpen(!isPopupOpen)
-console.log("kkkkk",isPopupOpen)
-  }
+    setIsPopupOpen(!isPopupOpen)
+    }
 
   let initialValues = {
     destination : "",
@@ -135,13 +143,12 @@ console.log("kkkkk",isPopupOpen)
         </div>
         <div className='addmembers'>
           <h2 onClick={handlepopup}>+ Add Tripmates</h2>
-          {/* {isPopupOpen && <TripmatesPop onClose = {() => setIsPopupOpen(false)}/>} */}
-          {isPopupOpen && <TripmatesPop onClose = {handlepopup} adtripmate={adtripmate}/>  }
+          {isPopupOpen && <TripmatesPop onClose = {handlepopup}/>  }
           <ul>
           {tripmates.map((mate, index) => (
               <li key={index}>
-                <h3>{mate.name}</h3>
-                <h4 onClick={() => handleRemoveTripmate(index)}>{mate.role}</h4>
+                <h3>{mate}</h3>
+                <h4 onClick={()=> dispatch(removeTripmate(index))}>Remove</h4>
               </li>
             ))}
             
