@@ -16,6 +16,7 @@ const Itinerary = ({tripData}) => {
 
   const [note, setNote] = useState("");
   const dispatch = useDispatch();
+  const itinerary = useSelector(state => state.itinerary.itinerary);
 
   const handleAddItinerary = () => {
     if (note.trim() !== "") {
@@ -42,11 +43,16 @@ const Itinerary = ({tripData}) => {
               </div>
                 {activeIndex === index && (
                   <div className="dropdown-content">
-                    <p>Add here</p>
-                    <DrawerInput type='text'
-                      placeholder='Add Notes'
+                    {itinerary && (
+                    <p>{itinerary}</p>
+                  )}
+                    <DrawerInput 
+                      type='text'
+                      placeholder='Enter your itinerary'
+                      value={note}
+                      onChange={(e) => setNote(e.target.value)}
                     />
-                    <TripmatesSubmit>
+                    <TripmatesSubmit onClick={handleAddItinerary()}>
                       Add
                     </TripmatesSubmit>
               </div>
