@@ -74,7 +74,7 @@ const PlanTrip = () => {
     }
   }, []);
 
-  
+  let condition = !values?.destination.length || (Object.keys(formik.errors)).length !== 0
   return (
     <>
       <div className='container planatrip'>
@@ -124,8 +124,7 @@ const PlanTrip = () => {
                         <span className="calendar-icon">📅</span>
                       <span className="date-text">
                         <input 
-                        // ref={inputRef} 
-                        name='endDate'
+                          name='endDate'
                           type='date'
                           placeholder='End Date'
                           value={values?.endDate}
@@ -154,11 +153,16 @@ const PlanTrip = () => {
             
           </ul>
         </div>
+        {console.log("Object.keys(values).length",formik.errors,Object.keys(formik.errors).length)}
 
         <div className='floatctastart'>
-          <Link onClick={() => handleSubmit()}>
+          <Link onClick={() => handleSubmit()} disabled={condition}>
             Create your trip
           </Link>
+
+           {/* <button onClick={() => handleSubmit()} disabled={condition}>
+            Create your trip
+          </button> */}
         </div>
 
       </div>
