@@ -43,16 +43,18 @@ const Itinerary = ({tripData}) => {
               </div>
                 {activeIndex === index && (
                   <div className="dropdown-content">
-                    {itinerary && (
-                    <p>{itinerary}</p>
-                  )}
+                    {/* {itinerary && ( */}
+                      {note.map((iti, index) => (
+                    <p key={index}>{iti}</p>
+                  ))}
+                  {/* )} */}
                     <DrawerInput 
                       type='text'
                       placeholder='Enter your itinerary'
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
                     />
-                    <TripmatesSubmit onClick={handleAddItinerary()}>
+                    <TripmatesSubmit onClick={handleAddItinerary}>
                       Add
                     </TripmatesSubmit>
               </div>

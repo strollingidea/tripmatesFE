@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    itinerary: "",
+    itinerary: [],
   };
 
   
@@ -12,7 +12,8 @@ const addeditdeletItinerarySlice = createSlice({
     initialState: initialState,
     reducers: {
         addItinerary: (state, action) => {
-            state.itinerary = action.payload;
+            state.itinerary.push(action.payload);
+            // state.itinerary = action.payload;
         },
         removeItinerary: (state, action) => {
             state.itinerary = "";
