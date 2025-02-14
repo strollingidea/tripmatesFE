@@ -18,11 +18,18 @@ const Itinerary = ({tripData}) => {
   const dispatch = useDispatch();
   const itinerary = useSelector(state => state.itinerary.itinerary);
 
-  const handleAddItinerary = () => {
+  const handleAddItinerary = (dayIndex) => {
     if (note.trim() !== "") {
-      dispatch(addItinerary(note)); // Store only one string
+      dispatch(addItinerary({ dayIndex, note })); // Store only one string
       setNote(""); // Clear input after adding
     }
+  };
+  // const handleRemoveItinerary = (index) => {
+  //   dispatch(removeItinerary(index));
+  // };
+
+  const handleRemoveItinerary = (dayIndex, noteIndex) => {
+    dispatch(removeItinerary({ dayIndex, noteIndex }));
   };
 
   const dayCount = getDayCount(tripData.startDate, tripData.endDate);
@@ -43,18 +50,21 @@ const Itinerary = ({tripData}) => {
               </div>
                 {activeIndex === index && (
                   <div className="dropdown-content">
-                    {/* {itinerary && ( */}
-                      {note.map((iti, index) => (
-                    <p key={index}>{iti}</p>
-                  ))}
-                  {/* )} */}
+                    {/* {itinerary.length > 0 && itinerary.map((iti, i) => ( */}
+                    {itinerary[index]?.map((iti, i) => (
+                    <ul key={i} style={{display:"flex", justifyContent:"space-between"}}>
+                      <li>{iti}</li>
+                      <button onClick={() => handleRemoveItinerary(index, i)}>Remove</button>
+                    </ul>
+                ))}
                     <DrawerInput 
                       type='text'
                       placeholder='Enter your itinerary'
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
                     />
-                    <TripmatesSubmit onClick={handleAddItinerary}>
+                    {/* <TripmatesSubmit onClick={handleAddItinerary}> */}
+                    <TripmatesSubmit onClick={() => handleAddItinerary(index)}>
                       Add
                     </TripmatesSubmit>
               </div>

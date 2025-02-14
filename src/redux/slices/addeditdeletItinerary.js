@@ -9,17 +9,29 @@ const initialState = {
 
 const addeditdeletItinerarySlice = createSlice({
     name: "itinerary",
-    initialState: initialState,
+    initialState,
     reducers: {
+        // addItinerary: (state, action) => {
+        //     state.itinerary.push(action.payload);
+        //     // state.itinerary = action.payload;
+        // },
+        // removeItinerary: (state, action) => {
+        //     state.itinerary = state.itinerary.filter((_, index) => index !== action.payload);
+        // },
+        // editItinerary: (state, action) => {
+        //     state.itinerary = action.payload;
+        // },
+
         addItinerary: (state, action) => {
-            state.itinerary.push(action.payload);
-            // state.itinerary = action.payload;
+            const { dayIndex, note } = action.payload;
+            if (!state.itinerary[dayIndex]) {
+                state.itinerary[dayIndex] = []; // Initialize array if not present
+            }
+            state.itinerary[dayIndex].push(note);
         },
         removeItinerary: (state, action) => {
-            state.itinerary = "";
-        },
-        editItinerary: (state, action) => {
-            state.itinerary = action.payload;
+            const { dayIndex, noteIndex } = action.payload;
+            state.itinerary[dayIndex] = state.itinerary[dayIndex].filter((_, i) => i !== noteIndex);
         },
     }
 });
