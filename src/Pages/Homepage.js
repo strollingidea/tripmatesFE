@@ -1,9 +1,9 @@
 import React from 'react'
 import './HomePage.scss'
-import Navbar from '../Component/Navbar/Navbar'
-import SecondBar from '../Component/SecondBar/SecondBar'
 import Logo from '../Images/logo.png'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import GoogleIcon from '../Images/google_icon.png'
+import EmailIcon from '../Images/email_icon.png'
 
 const Homepage = () => {
   return (
@@ -20,16 +20,24 @@ const Homepage = () => {
         <div className='container appmain'>
             <div className="logo">
               <a href="/">
-                {/* <img src={Logo}/> */}
-                Logo
+                <img src={Logo} alt='Lost in Mountains'/>
               </a>
             </div>
 
-            
-
-            <div className='plantripbtn'>
-              <Link to="/plantrip">Plan a new trip</Link>
+            <div className='signupgoogle'>
+              <img src={GoogleIcon} alt='GoogleIcon'/>
+              <p>SignUp with Google</p>
             </div>
+            
+            <div className='signupgoogle'>
+              <img src={EmailIcon} alt='EmailIcon'/>
+              <Link to="/signup">SignUp with Email</Link>
+            </div>
+
+            <div className='already'>
+              Already have an account? <span><Link to="/signup">Sign in</Link></span>
+            </div>
+            
         </div>
         
     </>

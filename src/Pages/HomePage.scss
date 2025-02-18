@@ -5,7 +5,7 @@
 
 .appmain{
     background-color: #1c1c1c;
-    max-width: 560px !important;
+    max-width: 480px !important;
     margin: 0 auto;
     padding: 30px;
     height: calc(100vh - 60px);
@@ -17,6 +17,8 @@
 
     .logo{
         margin: 0 auto;
+        position: fixed;
+        top: 50px;
     }
 }
 
@@ -32,5 +34,50 @@
     a{
         color: #1c1c1c;
         text-decoration: none;
+    }
+}
+
+.signupgoogle{
+    display: flex;
+    align-items: center;
+    border: 1px solid #fff;
+    border-radius: 50px;
+    color: #fff;
+    padding: 15px;
+    width: 90%;
+    margin: 10px 5%;
+    img{
+        width: 24px;
+    }
+    p{
+        width: 90%;
+        text-align: center;
+        margin: 0;
+    }
+    a{
+        width: 90%;
+        color: #fff; 
+        text-decoration: none;
+        text-align: center;
+    }
+}
+
+.already{
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    margin: 0 auto;
+    position: fixed;
+    bottom: 20px;
+    font-weight: 400;
+    span{
+        font-weight: 600;
+    }
+    a{
+        color: #fff; 
+        text-decoration: none;
+        &:hover{
+            text-decoration: underline;
+        }
     }
 }
