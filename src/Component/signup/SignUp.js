@@ -4,6 +4,7 @@ import { ClipLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 import './SignUp.scss'
 import Logo from '../../Images/logo.png'
+import { Link } from 'react-router-dom'
 
 export const SignUp = () => {
     const [active, setActive] = useState(false);
@@ -82,7 +83,7 @@ export const SignUp = () => {
 
 
     return (
-        <div className="signUpWrapper">
+        <div className="signUpWrapper appmain">
 
             <div className="signup">
 
@@ -109,7 +110,9 @@ export const SignUp = () => {
                         <input name="password" type="password" placeholder="Password" onChange={handleChange} />
                         {errors.password && (<p className="errors">{errors.password}</p>)}
                     </div>
+                    {/* <button type="submit">{loading ? <ClipLoader size={20} color="#fff" /> : active ? "Sign Up" : "Login"} </button> */}
                     <button type="submit">{loading ? <ClipLoader size={20} color="#fff" /> : active ? "Sign Up" : "Login"} </button>
+                    <Link to="/plantrip">SignUp</Link>
                 </form>
                 <p className="alternate" >{active ? "Already have an account?" : "New to Lost in Mountains?"} <span onClick={() => setActive(!active)}>{active ? "Login" : " Create account"}</span></p>
 

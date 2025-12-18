@@ -5,7 +5,7 @@
     padding: 30px;
     height: calc(100vh - 60px);
     position: relative;
-    overflow-y: scroll;
+    // overflow-y: scroll;
 }
 .Head{
     display: flex;
@@ -47,6 +47,7 @@
         font-size: 20px;
         margin: 0;
         padding-bottom: 20px;
+        cursor: pointer;
     }
     h3{
         font-size: 18px;
@@ -109,3 +110,28 @@
         text-decoration: none;
     }
 }
+
+.addmembers-popup-close{
+    position: absolute;
+    bottom: 10px;
+    right: 7px;
+    left: 0;
+    margin: 0 auto;
+    /* background-color: hsl(0, 79.32%, 46.19%); */
+    /* border: 1px solid hsl(6, 67.03%, 45.34%); */
+    color: hsl(0deg 3.03% 19.41%);
+    width: 50px;
+    height: auto;
+    font-size: 14px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 0px 5px;
+    cursor: pointer;
+}
+input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+  }

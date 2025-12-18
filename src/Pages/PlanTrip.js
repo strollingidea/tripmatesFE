@@ -102,8 +102,10 @@ const PlanTrip = () => {
             <div className="date-range-picker">
                 <label className="label">Dates (optional)</label>
                 <div className="date-inputs">
-                    <div className="date-input" style={{borderRight:"1px solid #000", marginRight:"15px"}}>
-                        <span className="calendar-icon">📅</span>
+                    <div className="date-input" style={{
+                      // borderRight:"1px solid #dfdfdf", 
+                      marginRight:"10px"}}>
+                        {/* <span className="calendar-icon">📅</span> */}
                       <span className="date-text">
                         <input
                         name='startDate'
@@ -121,7 +123,7 @@ const PlanTrip = () => {
                           ) : null}
                     </div>
                     <div className="date-input">
-                        <span className="calendar-icon">📅</span>
+                        {/* <span className="calendar-icon">📅</span> */}
                       <span className="date-text">
                         <input 
                           name='endDate'

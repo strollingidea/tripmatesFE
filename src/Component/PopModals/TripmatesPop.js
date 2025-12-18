@@ -31,7 +31,7 @@ const TripmatesPop = ({onClose, adtripmate}) => {
                 Add Tripmate
             </TripmatesSubmit>
             
-            <div onClick={onClose}>close</div>
+            <div className='addmembers-popup-close' onClick={onClose}>close</div>
         </TripmatespopDrawer>
     </>
   )
@@ -48,14 +48,13 @@ const TripmatespopDrawer = styled.div`
     flex-direction: column;
     gap: 10px;
     background-color: #fff;
-    /* width: 100%; */
-    max-width: 520px;
+    max-width: 500px;
     position: fixed;
     bottom: 0;
     margin: 0 auto;
     left: 0;
     right: 0;
-    padding: 20px;
+    padding: 0 20px 50px;
     border-radius: 20px 20px 0 0;
     box-shadow: 0px 0px 15px 5px #0000001a;
     z-index: 999999;

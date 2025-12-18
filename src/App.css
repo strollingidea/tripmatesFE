@@ -41,6 +41,7 @@ body{
     cursor: pointer;
     width: 50%;
     height: 100%;
+    position: relative;
     &:hover {
       /* border-color: #888; */
     }
@@ -49,7 +50,7 @@ body{
       font-size: 16px;
       color: #888;
       position: absolute;
-      right: 20px;
+      right: 32px;
       top: 24px;
     }
 
@@ -57,9 +58,9 @@ body{
       color: #7a7a7a;
       font-size: 18px;
       font-weight: 500;
-      padding-top: 4px;
-      padding-left: 5px;
+      padding: 0;
       position: relative;
+      width: 100%;
     }
   }
 }
