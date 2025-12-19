@@ -1,0 +1,78 @@
+  .popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checklist-container {
+  margin-top: 20px;
+}
+
+.checklist-container ul {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.checklist-container li {
+  margin-bottom: 5px;
+}
+
+.checklist-container li {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checklist-container li .completed {
+  text-decoration: line-through;
+  color: gray;
+}
+
+
+.checklist-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.checklist-container ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.checklist-container li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.checklist-container li .completed {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.add-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}

@@ -1,43 +1,64 @@
-import React, { useState } from 'react'
-import styled from 'styled-components';
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import styled from "styled-components";
+import { useDispatch } from "react-redux";
 import { addTripmate } from "../../redux/slices/removetripmateSlice";
 
-const TripmatesPop = ({onClose, adtripmate}) => {
+const TripmatesPop = ({ onClose }) => {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
-    // const tripmates = useSelector((state) => state.tripmates.tripmates);
-    const [newTripmate, setNewTripmate] = useState("");
+  const [newTripmate, setNewTripmate] = useState({
+    name: "",
+    email: "",
+  });
 
   const handleAddTripmate = () => {
-    if (newTripmate.trim()) {
+    if (newTripmate.name.trim() && newTripmate.email.trim()) {
       dispatch(addTripmate(newTripmate));
-      setNewTripmate(""); // Clear input
-      onClose()
+
+      setNewTripmate({
+        name: "",
+        email: "",
+      });
+
+      onClose();
     }
   };
 
   return (
-    <>
-        <TripmatespopDrawer>
-            <DrawerHeading>Add Tripmates</DrawerHeading>
-            <DrawerInput type='text'
-                placeholder='Tripmates Name'
-                value={newTripmate}
-                onChange={(e)=>setNewTripmate(e.target.value)}
-            />
-            {console.log(newTripmate, "pppppppppp")}
-            <TripmatesSubmit onClick={handleAddTripmate}>
-                Add Tripmate
-            </TripmatesSubmit>
-            
-            <div className='addmembers-popup-close' onClick={onClose}>close</div>
-        </TripmatespopDrawer>
-    </>
-  )
-}
+    <TripmatespopDrawer>
+      <DrawerHeading>Add Tripmates</DrawerHeading>
+
+      <DrawerInput
+        type="text"
+        placeholder="Tripmate Name"
+        value={newTripmate.name}
+        onChange={(e) =>
+          setNewTripmate({ ...newTripmate, name: e.target.value })
+        }
+      />
+
+      <DrawerInput
+        type="email"
+        placeholder="Tripmate Email"
+        value={newTripmate.email}
+        onChange={(e) =>
+          setNewTripmate({ ...newTripmate, email: e.target.value })
+        }
+      />
+
+      <TripmatesSubmit onClick={handleAddTripmate}>
+        Add Tripmate
+      </TripmatesSubmit>
+
+      <div className="addmembers-popup-close" onClick={onClose}>
+        close
+      </div>
+    </TripmatespopDrawer>
+  );
+};
 
 export default TripmatesPop;
+
 
 
 

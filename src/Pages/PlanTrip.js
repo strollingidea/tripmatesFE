@@ -148,7 +148,10 @@ const PlanTrip = () => {
           <ul>
           {tripmates.map((mate, index) => (
               <li key={index}>
-                <h3>{mate}</h3>
+                <div>
+                  <h3>{mate.name}</h3>
+                  <p>{mate.email}</p>
+                </div>
                 <h4 onClick={()=> dispatch(removeTripmate(index))}>Remove</h4>
               </li>
             ))}

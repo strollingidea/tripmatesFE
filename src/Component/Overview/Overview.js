@@ -14,13 +14,19 @@ const Overview = () => {
     // const {tripmates} = location.state || { tripmates: [] };
   return (
     <>
-        <div className='tripmateslist'>
+        <div className="tripmateslist">
             <h2>Your Tripmates</h2>
             <ul>
                 {tripmates.map((mate, index) => (
                     <li key={index}>
-                    <h3>{mate}</h3>
-                    <h4 onClick={()=> dispatch(removeTripmate(index))}>Remove</h4>
+                        <div>
+                            <h3>{mate.name}</h3>
+                            <p>{mate.email}</p>
+                        </div>
+
+                        <h4 onClick={() => dispatch(removeTripmate(index))}>
+                            Remove
+                        </h4>
                     </li>
                 ))}
             </ul>
