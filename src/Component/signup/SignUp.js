@@ -84,11 +84,11 @@ export const SignUp = () => {
     return (
         <div className="signUpWrapper appmain">
             <div className="signup">
-                <div className="logo">
+                {/* <div className="logo">
                     <a href="/">
                         <img src={Logo} alt='Lost in Mountains'/>
                     </a>
-                </div>
+                </div> */}
 
                 <form onSubmit={handleSubmit}>
                     {active && (

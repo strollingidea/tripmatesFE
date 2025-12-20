@@ -18,11 +18,11 @@ const Homepage = () => {
 
 
         <div className='container appmain'>
-            <div className="logo">
+            {/* <div className="logo">
               <a href="/">
                 <img src={Logo} alt='Lost in Mountains'/>
               </a>
-            </div>
+            </div> */}
 
             <div className='signupgoogle'>
               <img src={GoogleIcon} alt='GoogleIcon'/>
