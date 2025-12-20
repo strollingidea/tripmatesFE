@@ -21,27 +21,6 @@ const PlanTrip = () => {
   
   const inputRef = useRef();
 
-  
-  // const [tripmates, setTripmates] = useState(() => {
-  //   // Load initial tripmates from Local Storage if available
-  //   const savedTripmates = localStorage.getItem('tripmates');
-  //   return savedTripmates ? JSON.parse(savedTripmates) : [];
-  // });
-
-
-  // const adtripmate = (newTripmate) =>{
-  //  if(newTripmate){
-  //   const updatedTripmates = [...tripmates, { name: newTripmate, role: "Remove" }];
-  //   setTripmates(updatedTripmates);
-  //     localStorage.setItem('tripmates', JSON.stringify(updatedTripmates));
-  //  }
-  // }
-  // const handleRemoveTripmate = (index) => {
-  //   const updatedTripmates = tripmates.filter((_, i) => i !== index);
-  //   setTripmates(updatedTripmates);
-  //   localStorage.setItem('tripmates', JSON.stringify(updatedTripmates));
-  // };
-
   const handlepopup =()=>{
     setIsPopupOpen(!isPopupOpen)
     }
