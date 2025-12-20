@@ -17,6 +17,7 @@ function App() {
             <Route path="/" element={<Homepage/>} />
             <Route path="/plantrip" element={<PlanTrip />} />
             <Route path="/tripcreated" element={<TripCreated />} />
+            <Route path="/checklist/:id" element={<ChecklistDetail />} />
           </Routes>
         </Router>
       </Provider>

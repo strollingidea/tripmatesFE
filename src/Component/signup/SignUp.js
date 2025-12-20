@@ -20,49 +20,66 @@ export const SignUp = () => {
     };
 
     // Form submit handler
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
 
-        // 1️⃣ Validation
-        let validationErrors = {};
-        if (!formData.email) validationErrors.email = "Email is required";
-        else if (!/\S+@\S+\.\S+/.test(formData.email)) validationErrors.email = "Invalid email";
+    //     // 1️⃣ Validation
+    //     let validationErrors = {};
+    //     if (!formData.email) validationErrors.email = "Email is required";
+    //     else if (!/\S+@\S+\.\S+/.test(formData.email)) validationErrors.email = "Invalid email";
 
-        if (!formData.password) validationErrors.password = "Password is required";
-        else if (formData.password.length < 6) validationErrors.password = "Password must be at least 6 characters";
+    //     if (!formData.password) validationErrors.password = "Password is required";
+    //     else if (formData.password.length < 6) validationErrors.password = "Password must be at least 6 characters";
 
-        if (active && !formData.name) validationErrors.name = "Full name is required";
+    //     if (active && !formData.name) validationErrors.name = "Full name is required";
 
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            return;
-        }
+    //     if (Object.keys(validationErrors).length > 0) {
+    //         setErrors(validationErrors);
+    //         return;
+    //     }
 
-        // 2️⃣ API call
-        try {
-            setLoading(true);
-            const response = await axios.post(
-                `${process.env.REACT_APP_BACKEND_URL}api/auth/${active ? "signup" : "login"}`,
-                formData
-            );
+    //     // 2️⃣ API call
+    //     try {
+    //         setLoading(true);
+    //         const response = await axios.post(
+    //             `${process.env.REACT_APP_BACKEND_URL}api/auth/${active ? "signup" : "login"}`,
+    //             formData
+    //         );
 
-            if (response.data.token) {
-                // Save token & user info in localStorage
-                localStorage.setItem("token", response.data.token);
-                localStorage.setItem("user", JSON.stringify(response.data.user));
+    //         if (response.data.token) {
+    //             // Save token & user info in localStorage
+    //             localStorage.setItem("token", response.data.token);
+    //             localStorage.setItem("user", JSON.stringify(response.data.user));
 
-                toast.success(active ? "Signup successful" : "Login successful");
-                navigate("/plantrip");
-            } else {
-                toast.info(response.data.message);
-            }
-        } catch (err) {
-            console.log(err);
-            toast.error(err.response?.data?.message || "Server error");
-        } finally {
-            setLoading(false);
-        }
+    //             toast.success(active ? "Signup successful" : "Login successful");
+    //             navigate("/plantrip");
+    //         } else {
+    //             toast.info(response.data.message);
+    //         }
+    //     } catch (err) {
+    //         console.log(err);
+    //         toast.error(err.response?.data?.message || "Server error");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+    const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // fake login user
+    const dummyUser = {
+        name: "Test User",
+        email: "test@test.com"
     };
+
+    localStorage.setItem("token", "dummy-token");
+    localStorage.setItem("user", JSON.stringify(dummyUser));
+
+    toast.success("Login bypassed (dev mode)");
+    navigate("/plantrip");
+};
+
 
     return (
         <div className="signUpWrapper appmain">
