@@ -19,7 +19,7 @@ const TripCreated = () => {
   const endDate = tripData?.endDate;
   const dayCount = getDayCount(startDate, endDate);
 
-  // 🔹 Redux tripmates (TripmatesPop yahin add karta hai)
+  /* 🔹 Redux Tripmates */
   const reduxTripmates = useSelector(
     (state) => state.tripmates.tripmates
   );
@@ -35,6 +35,9 @@ const TripCreated = () => {
 
   const [showAddChecklist, setShowAddChecklist] = useState(false);
   const [showTripmatesPopup, setShowTripmatesPopup] = useState(false);
+
+  /* 🔹 3 DOT MENU STATE */
+  const [showMenu, setShowMenu] = useState(false);
 
   /* ---------------- LOAD TRIP FROM LOCALSTORAGE ---------------- */
   useEffect(() => {
@@ -62,7 +65,7 @@ const TripCreated = () => {
     }
   }, [reduxTripmates]);
 
-  /* ---------------- CHECKLIST HANDLER ---------------- */
+  /* ---------------- ADD CHECKLIST ---------------- */
   const addChecklist = (name) => {
     setTrip({
       ...trip,
@@ -70,21 +73,16 @@ const TripCreated = () => {
     });
   };
 
-  /* ---------------- REMOVE TRIPMATE ---------------- */
-  const removeTripmate = (index) => {
-    const updated = [...trip.tripmates];
-    updated.splice(index, 1);
-    setTrip({ ...trip, tripmates: updated });
+  /* ---------------- LOGOUT ---------------- */
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = "/";
   };
 
   return (
     <div className="container planatrip">
-      {/* Header */}
+      {/* HEADER */}
       <div className="Head">
-        {/* <Link to="/plantrip">
-          <img src={Backarrow} alt="Back" />
-        </Link> */}
-
         <div className="heading">
           <h1>{trip.destination || "Trip"}</h1>
           <p>
@@ -95,24 +93,42 @@ const TripCreated = () => {
             ({dayCount} Nights / {dayCount + 1} Days)
           </p>
         </div>
+
+        {/* 🔹 3 DOT MENU */}
+        <div className="menu-wrapper">
+          <span
+            className="dots"
+            onClick={() => setShowMenu((prev) => !prev)}
+          >
+            ⋮
+          </span>
+
+          {showMenu && (
+            <div className="menu-dropdown">
+              <Link to="/profile" onClick={() => setShowMenu(false)}>
+                Profile
+              </Link>
+              <button onClick={handleLogout}>Logout</button>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Tabs */}
+      {/* TABS */}
       <Tabs tripData={trip} />
 
-      {/* ---------------- TRIPMATES SECTION ---------------- */}
+      {/* TRIPMATES */}
       <div className="addmembers">
         <h2 onClick={() => setShowTripmatesPopup(true)}>
           + Add Tripmates
         </h2>
-
       </div>
 
       {showTripmatesPopup && (
         <TripmatesPop onClose={() => setShowTripmatesPopup(false)} />
       )}
 
-      {/* ---------------- ADD CHECKLIST ---------------- */}
+      {/* ADD CHECKLIST */}
       <div className="floataddlist">
         <button onClick={() => setShowAddChecklist(true)}>
           + Add List
@@ -126,7 +142,7 @@ const TripCreated = () => {
         />
       )}
 
-      {/* ---------------- CHECKLIST HEADINGS ---------------- */}
+      {/* CHECKLIST LIST */}
       {trip.checklists.map((checklist, index) => (
         <div key={index} className="checklist-heading">
           <Link to={`/trip/${tripId}/checklist/${index}`}>

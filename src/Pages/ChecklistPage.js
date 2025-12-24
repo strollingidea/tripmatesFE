@@ -11,7 +11,7 @@ const ChecklistPage = () => {
   const [trip, setTrip] = useState(null);
   const [showAddItem, setShowAddItem] = useState(false);
 
-  // Load trip
+  /* LOAD TRIP */
   useEffect(() => {
     const savedTrips = JSON.parse(localStorage.getItem("trips")) || [];
     const currentTrip = savedTrips.find(
@@ -20,7 +20,22 @@ const ChecklistPage = () => {
     if (currentTrip) setTrip(currentTrip);
   }, [tripId]);
 
-  // Save trip
+  /* AUTO CREATE CHECKLIST IF NOT EXISTS */
+  useEffect(() => {
+    if (!trip) return;
+
+    if (!trip.checklists[cIndex]) {
+      setTrip((prev) => ({
+        ...prev,
+        checklists: [
+          ...prev.checklists,
+          { name: "New Checklist", items: [] },
+        ],
+      }));
+    }
+  }, [trip, cIndex]);
+
+  /* SAVE TRIP */
   useEffect(() => {
     if (!trip) return;
     const savedTrips = JSON.parse(localStorage.getItem("trips")) || [];
@@ -30,59 +45,97 @@ const ChecklistPage = () => {
     localStorage.setItem("trips", JSON.stringify([...otherTrips, trip]));
   }, [trip, tripId]);
 
-  if (!trip || !trip.checklists[cIndex]) {
-    return <p>Checklist not found</p>;
+  if (!trip) {
+    return <p>Loading...</p>;
   }
 
-  const checklist = trip.checklists[cIndex];
+  // ✅ SAFE FALLBACK (MOST IMPORTANT LINE)
+  const checklist =
+    trip.checklists[cIndex] || { name: "New Checklist", items: [] };
 
-  // Add item from popup
+  /* ADD ITEM */
   const addItem = (text) => {
-    const updatedTrip = { ...trip };
-    updatedTrip.checklists[cIndex].items.push({
-      text,
-      completed: false,
-    });
-    setTrip(updatedTrip);
+    setTrip((prev) => ({
+      ...prev,
+      checklists: prev.checklists.map((cl, i) =>
+        i === cIndex
+          ? {
+              ...cl,
+              items: [...cl.items, { text, completed: false }],
+            }
+          : cl
+      ),
+    }));
   };
 
+  /* TOGGLE COMPLETE */
   const toggleComplete = (iIndex) => {
-    const updatedTrip = { ...trip };
-    const item = updatedTrip.checklists[cIndex].items[iIndex];
-    item.completed = !item.completed;
-    setTrip(updatedTrip);
+    setTrip((prev) => ({
+      ...prev,
+      checklists: prev.checklists.map((cl, i) =>
+        i === cIndex
+          ? {
+              ...cl,
+              items: cl.items.map((item, j) =>
+                j === iIndex
+                  ? { ...item, completed: !item.completed }
+                  : item
+              ),
+            }
+          : cl
+      ),
+    }));
   };
 
+  /* EDIT ITEM */
   const editItem = (iIndex, newText) => {
-    const updatedTrip = { ...trip };
-    updatedTrip.checklists[cIndex].items[iIndex].text = newText;
-    setTrip(updatedTrip);
+    setTrip((prev) => ({
+      ...prev,
+      checklists: prev.checklists.map((cl, i) =>
+        i === cIndex
+          ? {
+              ...cl,
+              items: cl.items.map((item, j) =>
+                j === iIndex ? { ...item, text: newText } : item
+              ),
+            }
+          : cl
+      ),
+    }));
   };
 
+  /* REMOVE ITEM */
   const removeItem = (iIndex) => {
-    const updatedTrip = { ...trip };
-    updatedTrip.checklists[cIndex].items.splice(iIndex, 1);
-    setTrip(updatedTrip);
+    setTrip((prev) => ({
+      ...prev,
+      checklists: prev.checklists.map((cl, i) =>
+        i === cIndex
+          ? {
+              ...cl,
+              items: cl.items.filter((_, j) => j !== iIndex),
+            }
+          : cl
+      ),
+    }));
   };
 
   return (
     <div className="container planatrip">
-      {/* Header */}
+      {/* HEADER */}
       <div className="Head">
-        <Link to={`/tripcreated`}>
+        <Link to={`/trip/${tripId}`}>
           <img src={Backarrow} alt="Back" />
         </Link>
         <h1>{checklist.name}</h1>
       </div>
 
-      {/* Add Item Button */}
+      {/* ADD ITEM */}
       <div className="floataddlist">
         <button onClick={() => setShowAddItem(true)}>
           + Add Item
         </button>
       </div>
 
-      {/* Add Item Popup */}
       {showAddItem && (
         <AddItem
           onAdd={addItem}
@@ -90,8 +143,12 @@ const ChecklistPage = () => {
         />
       )}
 
-      {/* Items */}
+      {/* ITEMS */}
       <ul className="checklist-items">
+        {checklist.items.length === 0 && (
+          <p>No items added yet</p>
+        )}
+
         {checklist.items.map((item, iIndex) => (
           <li key={iIndex}>
             <input
@@ -103,11 +160,15 @@ const ChecklistPage = () => {
             <input
               type="text"
               value={item.text}
-              onChange={(e) => editItem(iIndex, e.target.value)}
+              onChange={(e) =>
+                editItem(iIndex, e.target.value)
+              }
               className={item.completed ? "completed" : ""}
             />
 
-            <button onClick={() => removeItem(iIndex)}>Remove</button>
+            <button onClick={() => removeItem(iIndex)}>
+              Remove
+            </button>
           </li>
         ))}
       </ul>

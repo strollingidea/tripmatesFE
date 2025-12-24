@@ -150,3 +150,47 @@ input[type="date"] {
 
 
 
+.menu-wrapper {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.dots {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.menu-dropdown a,
+.menu-dropdown button {
+  padding: 10px 14px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.menu-dropdown a:hover,
+.menu-dropdown button:hover {
+  background: #f2f2f2;
+}
+
+
+
+
+
+

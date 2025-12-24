@@ -1,24 +1,30 @@
-import React, { useState } from 'react'
-import './Tabs.scss'
-import Overview from '../Overview/Overview';
-import Itinerary from '../Itinerary.js/Itinerary';
-import Budget from '../Budget/Budget';
+import React, { useState } from "react";
+import "./Tabs.scss";
+import Overview from "../Overview/Overview";
+import Itinerary from "../Itinerary.js/Itinerary";
+import Budget from "../Budget/Budget";
 
-const Tabs = ({tripData}) => {
-    const [activeTab, setActivetab] = useState("tab1")
+const Tabs = ({ tripData, setTrip }) => {
+  const [activeTab, setActivetab] = useState("tab1");
 
-    const renderContent = () => {
-        switch (activeTab) {
-          case "tab1":
-            return <><Overview/></>;
-          case "tab2":
-            return <><Itinerary tripData={tripData}/></>;
-          case "tab3":
-            return <><Budget/></>;
-          default:
-            return null;
-        }
-      };
+  const renderContent = () => {
+    switch (activeTab) {
+      case "tab1":
+        return (
+          <Overview
+            trip={tripData}
+            tripId={tripData.id}
+            setTrip={setTrip}
+          />
+        );
+      case "tab2":
+        return <Itinerary tripData={tripData} />;
+      case "tab3":
+        return <Budget />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="tabs">
@@ -42,9 +48,10 @@ const Tabs = ({tripData}) => {
           Budget
         </button>
       </div>
-      <div className="tab-content">{renderContent()}</div>
-    </div>  
-  )
-}
 
-export default Tabs
+      <div className="tab-content">{renderContent()}</div>
+    </div>
+  );
+};
+
+export default Tabs;
