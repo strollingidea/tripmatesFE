@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import Tabs from "../Component/Tabs/Tabs";
 import Backarrow from "../Images/backarrow.png";
 import AddChecklist from "../Component/PopModals/AddChecklist";
+import TripmatesPop from "../Component/PopModals/TripmatesPop";
+
 import "./PlanTrip.scss";
 import { formatDate, getDayCount } from "../utils/dateUtils";
 
 const TripCreated = () => {
   const location = useLocation();
   const { tripData } = location.state || {};
-  const tripId = tripData?.id || 1; // Unique trip id
+
+  const tripId = tripData?.id || Date.now();
   const startDate = tripData?.startDate;
   const endDate = tripData?.endDate;
   const dayCount = getDayCount(startDate, endDate);
+
+  // 🔹 Redux tripmates (TripmatesPop yahin add karta hai)
+  const reduxTripmates = useSelector(
+    (state) => state.tripmates.tripmates
+  );
 
   const [trip, setTrip] = useState({
     id: tripId,
@@ -20,13 +30,13 @@ const TripCreated = () => {
     startDate: startDate || "",
     endDate: endDate || "",
     tripmates: tripData?.tripmates || [],
-    checklists: [],
+    checklists: tripData?.checklists || [],
   });
 
   const [showAddChecklist, setShowAddChecklist] = useState(false);
-  const [itemInputs, setItemInputs] = useState({});
+  const [showTripmatesPopup, setShowTripmatesPopup] = useState(false);
 
-  // Load trips from localStorage
+  /* ---------------- LOAD TRIP FROM LOCALSTORAGE ---------------- */
   useEffect(() => {
     const savedTrips = JSON.parse(localStorage.getItem("trips")) || [];
     const currentTrip = savedTrips.find((t) => t.id === tripId);
@@ -35,14 +45,24 @@ const TripCreated = () => {
     }
   }, [tripId]);
 
-  // Save trips to localStorage whenever trip changes
+  /* ---------------- SAVE TRIP TO LOCALSTORAGE ---------------- */
   useEffect(() => {
     const savedTrips = JSON.parse(localStorage.getItem("trips")) || [];
     const otherTrips = savedTrips.filter((t) => t.id !== tripId);
     localStorage.setItem("trips", JSON.stringify([...otherTrips, trip]));
   }, [trip, tripId]);
 
-  // ✅ Checklist handlers
+  /* ---------------- SYNC REDUX TRIPMATES ---------------- */
+  useEffect(() => {
+    if (reduxTripmates.length) {
+      setTrip((prev) => ({
+        ...prev,
+        tripmates: reduxTripmates,
+      }));
+    }
+  }, [reduxTripmates]);
+
+  /* ---------------- CHECKLIST HANDLER ---------------- */
   const addChecklist = (name) => {
     setTrip({
       ...trip,
@@ -50,39 +70,21 @@ const TripCreated = () => {
     });
   };
 
-  const handleAddItem = (cIndex, text) => {
-    if (!text.trim()) return;
-    const updated = [...trip.checklists];
-    updated[cIndex].items.push({ text: text.trim(), completed: false });
-    setTrip({ ...trip, checklists: updated });
-  };
-
-  const toggleComplete = (cIndex, iIndex) => {
-    const updated = [...trip.checklists];
-    updated[cIndex].items[iIndex].completed =
-      !updated[cIndex].items[iIndex].completed;
-    setTrip({ ...trip, checklists: updated });
-  };
-
-  const removeItem = (cIndex, iIndex) => {
-    const updated = [...trip.checklists];
-    updated[cIndex].items.splice(iIndex, 1);
-    setTrip({ ...trip, checklists: updated });
-  };
-
-  const editItem = (cIndex, iIndex, newText) => {
-    const updated = [...trip.checklists];
-    updated[cIndex].items[iIndex].text = newText;
-    setTrip({ ...trip, checklists: updated });
+  /* ---------------- REMOVE TRIPMATE ---------------- */
+  const removeTripmate = (index) => {
+    const updated = [...trip.tripmates];
+    updated.splice(index, 1);
+    setTrip({ ...trip, tripmates: updated });
   };
 
   return (
     <div className="container planatrip">
       {/* Header */}
       <div className="Head">
-        <Link to="/plantrip">
+        {/* <Link to="/plantrip">
           <img src={Backarrow} alt="Back" />
-        </Link>
+        </Link> */}
+
         <div className="heading">
           <h1>{trip.destination || "Trip"}</h1>
           <p>
@@ -95,14 +97,28 @@ const TripCreated = () => {
         </div>
       </div>
 
+      {/* Tabs */}
       <Tabs tripData={trip} />
 
-      {/* + Add List button */}
-      <div className="floataddlist">
-        <button onClick={() => setShowAddChecklist(true)}>+ Add List</button>
+      {/* ---------------- TRIPMATES SECTION ---------------- */}
+      <div className="addmembers">
+        <h2 onClick={() => setShowTripmatesPopup(true)}>
+          + Add Tripmates
+        </h2>
+
       </div>
 
-      {/* AddChecklist popup */}
+      {showTripmatesPopup && (
+        <TripmatesPop onClose={() => setShowTripmatesPopup(false)} />
+      )}
+
+      {/* ---------------- ADD CHECKLIST ---------------- */}
+      <div className="floataddlist">
+        <button onClick={() => setShowAddChecklist(true)}>
+          + Add List
+        </button>
+      </div>
+
       {showAddChecklist && (
         <AddChecklist
           onAdd={addChecklist}
@@ -110,47 +126,12 @@ const TripCreated = () => {
         />
       )}
 
-      {/* Render checklists */}
-      {trip.checklists.map((checklist, cIndex) => (
-        <div key={cIndex} className="checklist-container">
-          <h3>{checklist.name}</h3>
-          <div className="add-item">
-            <input
-              type="text"
-              placeholder="New item"
-              value={itemInputs[cIndex] || ""}
-              onChange={(e) =>
-                setItemInputs({ ...itemInputs, [cIndex]: e.target.value })
-              }
-            />
-            <button
-              onClick={() => {
-                handleAddItem(cIndex, itemInputs[cIndex] || "");
-                setItemInputs({ ...itemInputs, [cIndex]: "" });
-              }}
-            >
-              Add Item
-            </button>
-          </div>
-
-          <ul>
-            {checklist.items.map((item, iIndex) => (
-              <li key={iIndex}>
-                <input
-                  type="checkbox"
-                  checked={item.completed}
-                  onChange={() => toggleComplete(cIndex, iIndex)}
-                />
-                <input
-                  type="text"
-                  value={item.text}
-                  onChange={(e) => editItem(cIndex, iIndex, e.target.value)}
-                  className={item.completed ? "completed" : ""}
-                />
-                <button onClick={() => removeItem(cIndex, iIndex)}>Remove</button>
-              </li>
-            ))}
-          </ul>
+      {/* ---------------- CHECKLIST HEADINGS ---------------- */}
+      {trip.checklists.map((checklist, index) => (
+        <div key={index} className="checklist-heading">
+          <Link to={`/trip/${tripId}/checklist/${index}`}>
+            <h3>{checklist.name}</h3>
+          </Link>
         </div>
       ))}
     </div>

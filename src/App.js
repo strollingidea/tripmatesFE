@@ -6,6 +6,7 @@ import TripCreated from './Pages/TripCreated';
 import { Provider } from "react-redux";
 import store from './redux/store/store';
 import { SignUp } from './Component/signup/SignUp';
+import ChecklistPage from "./Pages/ChecklistPage";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
             <Route path="/" element={<Homepage/>} />
             <Route path="/plantrip" element={<PlanTrip />} />
             <Route path="/tripcreated" element={<TripCreated />} />
-            {/* <Route path="/checklist/:id" element={<ChecklistDetail />} /> */}
+            <Route path="/trip/:tripId/checklist/:checklistIndex" element={<ChecklistPage />}/>
           </Routes>
         </Router>
       </Provider>

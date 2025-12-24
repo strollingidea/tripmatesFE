@@ -59,9 +59,9 @@ const PlanTrip = () => {
       <div className='container planatrip'>
         
         <div className='Head'>
-            <Link to="/">
+            {/* <Link to="/">
                 <img src={Backarrow}/>
-            </Link>
+            </Link> */}
             <div className='heading'>
                 {/* <h1>Plan a Trip</h1> */}
                 <p>Build an itinerary and map out your upcoming plans</p>

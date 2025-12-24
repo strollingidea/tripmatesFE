@@ -64,3 +64,8 @@ body{
     }
   }
 }
+
+.tab-content{
+      overflow-y: scroll;
+    height: calc(100vh - 210px);
+}
