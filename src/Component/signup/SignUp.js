@@ -52,7 +52,7 @@ export const SignUp = () => {
                 localStorage.setItem("user", JSON.stringify(response.data.user));
 
                 toast.success(active ? "Signup successful" : "Login successful");
-                navigate("/plantrip");
+                navigate("/dashboard");
             } else {
                 toast.info(response.data.message);
             }
@@ -96,6 +96,7 @@ export const SignUp = () => {
                             <input 
                                 name="name" 
                                 type="text" 
+                                 autoComplete="off"
                                 placeholder="Full name" 
                                 onChange={handleChange} 
                             />
@@ -106,6 +107,7 @@ export const SignUp = () => {
                         <input 
                             name="email" 
                             type="email" 
+                             autoComplete="off"
                             placeholder="Email" 
                             onChange={handleChange} 
                         />
@@ -115,6 +117,7 @@ export const SignUp = () => {
                         <input 
                             name="password" 
                             type="password" 
+                             autoComplete="off"
                             placeholder="Password" 
                             onChange={handleChange} 
                         />

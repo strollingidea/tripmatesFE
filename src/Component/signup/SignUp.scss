@@ -6,6 +6,10 @@
   background: #00000073;
   justify-content: center;
   align-items: center;
+  background-image: url(../../Images/signup_back.jpg);
+  background-size: cover;
+  background-position: center;
+  font-family: 'Poppins', sans-serif;
 
   .signup {
     width: 100%;
@@ -29,7 +33,6 @@
     button {
       // width: 100%;
       outline: none;
-      font-family: Instrument Sans;
       font-size: 16px;
       font-weight: 500;
       line-height: 24px;
@@ -46,26 +49,26 @@
     form {
       margin-top: 30px;
       display: flex;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       flex-direction: column;
-      gap: 30px;
+      gap: 20px;
 
       input {
-        border: 1px solid #fff;
+        border: 1px solid #ffffff78;
         border-radius: 50px;
-        color: #fff;
+        color: #ffffff;
         padding: 20px;
-        width: calc(100% - 80px);
+        width: calc(100% - 40px);
         margin: 0 20px;
-        background: transparent;
+        background: #0000006b;
       }
 
       button {
         border-radius: 50px;
-        color: #232323;
+        color: #ffffff;
         padding: 20px;
         margin: 0 20px;
-        background: #b79a03;
+        background: #8403b7;
         outline: 0 !important;
         border: 0;
         text-align: center;
@@ -73,7 +76,7 @@
     }
 
     .alternate {
-      font-size: 16px;
+      font-size: 12px;
       color: #fff;
       text-align: center;
       margin: 0 auto;
@@ -90,4 +93,9 @@
       }
     }
   }
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #000000e1 inset;
+  -webkit-text-fill-color: #fff !important;
 }

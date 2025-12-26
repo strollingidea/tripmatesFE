@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import store from './redux/store/store';
 import { SignUp } from './Component/signup/SignUp';
 import ChecklistPage from "./Pages/ChecklistPage";
+import Dashboard from './Pages/Dashboard';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Routes>
             <Route path="signup" element={<SignUp/>} />
             <Route path="/" element={<Homepage/>} />
+            <Route path="/dashboard" element={<Dashboard/>} />
             <Route path="/plantrip" element={<PlanTrip />} />
             <Route path="/tripcreated" element={<TripCreated />} />
             <Route path="/trip/:tripId/checklist/:checklistIndex" element={<ChecklistPage />} />
