@@ -69,7 +69,7 @@ const TripmatespopDrawer = styled.div`
     flex-direction: column;
     gap: 10px;
     background-color: #fff;
-    max-width: 500px;
+    max-width: 480px;
     position: fixed;
     bottom: 0;
     margin: 0 auto;
@@ -81,12 +81,12 @@ const TripmatespopDrawer = styled.div`
     z-index: 999999;
 `
 
-const DrawerHeading = styled.h2`
-    padding: 20px;
+const DrawerHeading = styled.h5`
     color: #000;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 500;
     text-align: center;
+    padding-top: 10px;
 `
 
 const DrawerInput = styled.input`
@@ -101,14 +101,15 @@ const DrawerInput = styled.input`
 `
 
 const TripmatesSubmit = styled.div`
-    padding: 20px;
-    border: 1px solid #000;
-    background-color: yellow;
+    padding: 10px;
+    border: 1px solid #c1c1c1;
+    background-color: #ffc300;
     color: #000;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 500;
     text-align: center;
     cursor: pointer;
+    border-radius: 6px;
 `
 
 

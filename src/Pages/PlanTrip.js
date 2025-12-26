@@ -121,8 +121,15 @@ const PlanTrip = () => {
                 </div>
             </div>
         </div>
-        <div className='addmembers'>
-          <h2 onClick={handlepopup}>+ Add Tripmates</h2>
+        <div className='tripmateslist'>
+          <div className="tripmateslist-heading">
+          <h2>Your Tripmates</h2>
+          <div className="addmembers">
+            <h2 onClick={() => handlepopup(true)}>
+              +
+            </h2>
+          </div>
+        </div>
           {isPopupOpen && <TripmatesPop onClose = {handlepopup}/>  }
           <ul>
           {tripmates.map((mate, index) => (
