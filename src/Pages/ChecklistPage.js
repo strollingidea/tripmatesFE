@@ -11,33 +11,37 @@ const ChecklistPage = () => {
   const [trip, setTrip] = useState(null);
   const [showAddItem, setShowAddItem] = useState(false);
 
-  /* LOAD TRIP */
+  /* ---------------- LOAD TRIP ---------------- */
   useEffect(() => {
     const savedTrips = JSON.parse(localStorage.getItem("trips")) || [];
     const currentTrip = savedTrips.find(
       (t) => String(t.id) === String(tripId)
     );
-    if (currentTrip) setTrip(currentTrip);
+    if (currentTrip) {
+      setTrip(currentTrip);
+    }
   }, [tripId]);
 
-  /* AUTO CREATE CHECKLIST IF NOT EXISTS */
+  /* ---------------- AUTO CREATE CHECKLIST ---------------- */
   useEffect(() => {
     if (!trip) return;
 
     if (!trip.checklists[cIndex]) {
-      setTrip((prev) => ({
-        ...prev,
+      const updatedTrip = {
+        ...trip,
         checklists: [
-          ...prev.checklists,
-          { name: "New Checklist", items: [] },
+          ...trip.checklists,
+          { name: `Checklist ${cIndex + 1}`, items: [] },
         ],
-      }));
+      };
+      setTrip(updatedTrip);
     }
   }, [trip, cIndex]);
 
-  /* SAVE TRIP */
+  /* ---------------- SAVE TRIP ---------------- */
   useEffect(() => {
     if (!trip) return;
+
     const savedTrips = JSON.parse(localStorage.getItem("trips")) || [];
     const otherTrips = savedTrips.filter(
       (t) => String(t.id) !== String(tripId)
@@ -49,11 +53,11 @@ const ChecklistPage = () => {
     return <p>Loading...</p>;
   }
 
-  // ✅ SAFE FALLBACK (MOST IMPORTANT LINE)
+  /* ---------------- SAFE CHECKLIST ---------------- */
   const checklist =
-    trip.checklists[cIndex] || { name: "New Checklist", items: [] };
+    trip.checklists[cIndex] || { name: "Checklist", items: [] };
 
-  /* ADD ITEM */
+  /* ---------------- ADD ITEM ---------------- */
   const addItem = (text) => {
     setTrip((prev) => ({
       ...prev,
@@ -68,7 +72,7 @@ const ChecklistPage = () => {
     }));
   };
 
-  /* TOGGLE COMPLETE */
+  /* ---------------- TOGGLE COMPLETE ---------------- */
   const toggleComplete = (iIndex) => {
     setTrip((prev) => ({
       ...prev,
@@ -87,7 +91,7 @@ const ChecklistPage = () => {
     }));
   };
 
-  /* EDIT ITEM */
+  /* ---------------- EDIT ITEM ---------------- */
   const editItem = (iIndex, newText) => {
     setTrip((prev) => ({
       ...prev,
@@ -104,7 +108,7 @@ const ChecklistPage = () => {
     }));
   };
 
-  /* REMOVE ITEM */
+  /* ---------------- REMOVE ITEM ---------------- */
   const removeItem = (iIndex) => {
     setTrip((prev) => ({
       ...prev,
@@ -123,13 +127,13 @@ const ChecklistPage = () => {
     <div className="container planatrip">
       {/* HEADER */}
       <div className="Head">
-        <Link to={`/trip/${tripId}`}>
+        <Link to={`/tripcreated`}>
           <img src={Backarrow} alt="Back" />
         </Link>
         <h1>{checklist.name}</h1>
       </div>
 
-      {/* ADD ITEM */}
+      {/* ADD ITEM BUTTON */}
       <div className="floataddlist">
         <button onClick={() => setShowAddItem(true)}>
           + Add Item

@@ -66,6 +66,14 @@ body{
 }
 
 .tab-content{
-      overflow-y: scroll;
-    height: calc(100vh - 210px);
+  overflow-y: scroll;
+  height: calc(100vh - 210px);
+  /* Firefox */
+  scrollbar-width: none;
+  /* IE & Edge */
+  -ms-overflow-style: none;
+}
+/* Chrome, Safari, Opera */
+.scroll-container::-webkit-scrollbar {
+  display: none;
 }

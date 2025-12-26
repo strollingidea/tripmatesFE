@@ -115,41 +115,10 @@ const TripCreated = () => {
       </div>
 
       {/* TABS */}
-      <Tabs tripData={trip} />
-
-      {/* TRIPMATES */}
-      <div className="addmembers">
-        <h2 onClick={() => setShowTripmatesPopup(true)}>
-          + Add Tripmates
-        </h2>
-      </div>
-
-      {showTripmatesPopup && (
-        <TripmatesPop onClose={() => setShowTripmatesPopup(false)} />
-      )}
+      <Tabs tripData={trip} setTrip={setTrip}/>
 
       {/* ADD CHECKLIST */}
-      <div className="floataddlist">
-        <button onClick={() => setShowAddChecklist(true)}>
-          + Add List
-        </button>
-      </div>
-
-      {showAddChecklist && (
-        <AddChecklist
-          onAdd={addChecklist}
-          onClose={() => setShowAddChecklist(false)}
-        />
-      )}
-
-      {/* CHECKLIST LIST */}
-      {trip.checklists.map((checklist, index) => (
-        <div key={index} className="checklist-heading">
-          <Link to={`/trip/${tripId}/checklist/${index}`}>
-            <h3>{checklist.name}</h3>
-          </Link>
-        </div>
-      ))}
+      
     </div>
   );
 };
