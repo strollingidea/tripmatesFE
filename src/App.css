@@ -28,7 +28,7 @@
     font-weight: 500;
     padding: 18px 22px;
     border-radius: 6px;
-    width: calc(100% - 44px);
+    width: 100%;
     background: transparent;
   }
 
@@ -65,7 +65,7 @@
 
 .tab-content{
   overflow-y: scroll;
-  height: calc(100vh - 210px);
+  height: auto;
   /* Firefox */
   scrollbar-width: none;
   /* IE & Edge */

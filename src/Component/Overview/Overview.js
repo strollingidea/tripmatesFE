@@ -3,6 +3,10 @@ import "./Overview.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeTripmate } from "../../redux/slices/removetripmateSlice";
+import {
+  addChecklistItem,
+  removeChecklistItem,
+} from "../../redux/slices/checklistSlice";
 import TripmatesPop from "../PopModals/TripmatesPop";
 import AddChecklist from "../PopModals/AddChecklist";
 
@@ -19,13 +23,39 @@ const Overview = ({ trip, setTrip, tripId }) => {
       ...prev,
       checklists: [...prev.checklists, { name, items: [] }],
     }));
+
+    // redux + localStorage
+    dispatch(addChecklistItem({ name, items: [] }));
+  };
+
+  /* ---------------- REMOVE CHECKLIST ---------------- */
+  const removeChecklist = (index) => {
+    // update local trip state
+    setTrip((prev) => ({
+      ...prev,
+      checklists: prev.checklists.filter((_, i) => i !== index),
+    }));
+
+    // update redux + localStorage
+    dispatch(removeChecklistItem(index));
   };
 
   return (
     <>
       {/* TRIPMATES */}
       <div className="tripmateslist">
-        <h2>Your Tripmates</h2>
+        <div className="tripmateslist-heading">
+          <h2>Your Tripmates</h2>
+          <div className="addmembers">
+            <h2 onClick={() => setShowTripmatesPopup(true)}>
+              +
+            </h2>
+          </div>
+        </div>
+
+        {tripmates.length === 0 && (
+          <p className="no-tripmates">No tripmates added yet</p>
+        )}
 
         <ul>
           {tripmates.map((mate, index) => (
@@ -41,11 +71,7 @@ const Overview = ({ trip, setTrip, tripId }) => {
           ))}
         </ul>
 
-        <div className="addmembers">
-          <h2 onClick={() => setShowTripmatesPopup(true)}>
-            + Add Tripmates
-          </h2>
-        </div>
+        
 
         {showTripmatesPopup && (
           <TripmatesPop onClose={() => setShowTripmatesPopup(false)} />
@@ -54,27 +80,34 @@ const Overview = ({ trip, setTrip, tripId }) => {
 
       {/* CHECKLISTS */}
       <div className="overview-checklists">
-        <h2>Your Checklists</h2>
-
-        {trip?.checklists?.length === 0 && (
-          <p>No checklists added yet</p>
-        )}
-
-        {trip?.checklists?.map((checklist, index) => (
-          <div key={index} className="checklist-heading">
-            <Link to={`/trip/${tripId}/checklist/${index}`}>
-              <h3>{checklist.name}</h3>
-            </Link>
+        <div className="tripmateslist-heading">
+          <h2>Your Checklists</h2>
+          <div className="addmembers">
+            <h2 onClick={() => setShowAddChecklist(true)}>
+              +
+            </h2>
           </div>
-        ))}
-
-        {/* ADD CHECKLIST */}
-        <div className="addmembers">
-          <h2 onClick={() => setShowAddChecklist(true)}>
-            + Add Checklist
-          </h2>
         </div>
 
+        {trip?.checklists?.length === 0 && (
+          <p className="no-tripmates">No checklists added yet</p>
+        )}
+
+        <ul>
+          {trip?.checklists?.map((checklist, index) => (
+            <li key={index} className="checklist-heading">
+              <Link to={`/trip/${tripId}/checklist/${index}`}>
+                <h3>{checklist.name}</h3>
+              </Link>
+              <h4 onClick={() => removeChecklist(index)}>
+                Remove
+              </h4>
+            </li>
+          ))}
+        </ul>
+
+        {/* ADD CHECKLIST */}
+        
 
         {showAddChecklist && (
           <AddChecklist
