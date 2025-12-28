@@ -23,8 +23,8 @@ const AddChecklist = ({ onAdd, onClose }) => {
           onChange={(e) => setChecklistName(e.target.value)}
         />
         <div className="popup-buttons">
-          <button onClick={handleAdd}>Add</button>
-          <button onClick={onClose}>Close</button>
+          <h3 onClick={handleAdd}>Add</h3>
+          <h4 onClick={onClose}>Close</h4>
         </div>
       </div>
     </div>

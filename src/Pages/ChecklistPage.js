@@ -135,9 +135,9 @@ const ChecklistPage = () => {
 
       {/* ADD ITEM BUTTON */}
       <div className="floataddlist">
-        <button onClick={() => setShowAddItem(true)}>
-          + Add Item
-        </button>
+        <h2 onClick={() => setShowAddItem(true)}>
+          +
+        </h2>
       </div>
 
       {showAddItem && (

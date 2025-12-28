@@ -130,6 +130,9 @@ const PlanTrip = () => {
             </h2>
           </div>
         </div>
+        {tripmates.length === 0 && (
+          <p className="no-tripmates">No tripmates added yet</p>
+        )}
           {isPopupOpen && <TripmatesPop onClose = {handlepopup}/>  }
           <ul>
           {tripmates.map((mate, index) => (

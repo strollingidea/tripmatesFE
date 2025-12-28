@@ -9,7 +9,15 @@
 }
 .Head{
     display: flex;
+    align-items: center;
     gap: 20px;
+    h1{
+        color: #333030;
+        font-weight: 500;
+        font-size: 18px;
+        margin: 0;
+        padding: 0;
+    }
 }
 .heading{
     text-align: center;
@@ -105,19 +113,19 @@
 }
 
 .floataddlist{
-    background-color: #FFC300;
-    padding: 20px 30px;
-    text-align: center;
-    position: fixed;
-    bottom: 30px;
-    margin: 0 auto;
-    margin-left: 300px;
-    width: 150px;
-    max-width: calc(480px - 60px);
-    border-radius: 50px;
-    font-size: 24px;
-    font-weight: 500;
-    cursor: pointer;
+    h2{
+        background-color: #ffc300;
+        color: #101010;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25px;
+        height: 25px;
+        border-radius: 50px;
+        padding: 0;
+        margin: 0;
+        font-size: 18px;
+    }
     a{
         color: #333030;
         text-decoration: none;
@@ -191,6 +199,17 @@ input[type="date"] {
 .menu-dropdown a:hover,
 .menu-dropdown button:hover {
   background: #f2f2f2;
+}
+
+.checklist-items{
+    list-style: none;
+    p{
+        margin-top: 20px;
+        font-size: 14px;
+        text-align: center;
+        color: #b1b1b1;
+        font-weight: 500;
+    }
 }
 
 
