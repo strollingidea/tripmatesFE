@@ -51,12 +51,14 @@ const Itinerary = ({tripData}) => {
                 {activeIndex === index && (
                   <div className="dropdown-content">
                     {/* {itinerary.length > 0 && itinerary.map((iti, i) => ( */}
+                    <ul>
                     {itinerary[index]?.map((iti, i) => (
-                    <div key={i} style={{display:"flex", justifyContent:"space-between"}}>
+                    <li key={i} style={{display:"flex", justifyContent:"space-between" , paddingBottom:"10px"}}>
                       <h3>{iti}</h3>
-                      <button onClick={() => handleRemoveItinerary(index, i)}>Remove</button>
-                    </div>
+                      <p style={{fontSize:"12px"}} onClick={() => handleRemoveItinerary(index, i)}>Remove</p>
+                    </li>
                 ))}
+                </ul>
                     <DrawerInput 
                       type='text'
                       placeholder='Enter your itinerary'
@@ -102,4 +104,11 @@ const TripmatesSubmit = styled.div`
     text-align: center;
     cursor: pointer;
     border-radius: 6px;
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
