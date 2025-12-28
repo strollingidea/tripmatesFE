@@ -95,15 +95,14 @@
 }
 .floatctastart{
     background-color: #FFC300;
-    padding: 20px 30px;
+    padding: 10px 0;
     text-align: center;
     position: fixed;
     bottom: 30px;
     margin: 0 auto;
-    width: 100%;
-    max-width: calc(480px - 60px);
+    width: calc(100% - 40px);
     border-radius: 6px;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 500;
     cursor: pointer;
     a{
@@ -209,6 +208,16 @@ input[type="date"] {
         text-align: center;
         color: #b1b1b1;
         font-weight: 500;
+    }
+    input{
+        border: 1px solid #d1d1d1;
+        color: #333030;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 10px 16px;
+        border-radius: 6px;
+        width: 100%;
+        background: transparent;
     }
 }
 
