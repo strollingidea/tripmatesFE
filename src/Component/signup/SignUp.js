@@ -1,141 +1,162 @@
 import { useState } from "react";
 import axios from "axios";
-import { ClipLoader } from 'react-spinners';
-import { toast } from 'react-toastify';
-import './SignUp.scss';
-import Logo from '../../Images/logo.png';
-import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from "react-spinners";
+import { toast } from "react-toastify";
+import "./SignUp.scss";
+import { useNavigate } from "react-router-dom";
 
 export const SignUp = () => {
-    const [active, setActive] = useState(false); // false -> login, true -> signup
-    const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({ name: "", email: '', password: '' });
-    const [errors, setErrors] = useState({});
-    const navigate = useNavigate();
+  const [active, setActive] = useState(false); // false = login, true = signup
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
-    // Input change handler
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
+  // Input handler
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-    // Form submit handler
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  // Form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        // 1️⃣ Validation
-        let validationErrors = {};
-        if (!formData.email) validationErrors.email = "Email is required";
-        else if (!/\S+@\S+\.\S+/.test(formData.email)) validationErrors.email = "Invalid email";
+    // 🔍 Validation
+    let validationErrors = {};
 
-        if (!formData.password) validationErrors.password = "Password is required";
-        else if (formData.password.length < 6) validationErrors.password = "Password must be at least 6 characters";
+    if (!formData.email)
+      validationErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      validationErrors.email = "Invalid email";
 
-        if (active && !formData.name) validationErrors.name = "Full name is required";
+    if (!formData.password)
+      validationErrors.password = "Password is required";
+    else if (formData.password.length < 6)
+      validationErrors.password =
+        "Password must be at least 6 characters";
 
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            return;
-        }
+    if (active && !formData.name)
+      validationErrors.name = "Full name is required";
 
-        // 2️⃣ API call
-        try {
-            setLoading(true);
-            const response = await axios.post(
-                `${process.env.REACT_APP_BACKEND_URL}api/auth/${active ? "register" : "login"}`,
-                formData
-            );
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
 
-            if (response.data.token) {
-                // Save token & user info in localStorage
-                localStorage.setItem("token", response.data.token);
-                localStorage.setItem("user", JSON.stringify(response.data.user));
+    setErrors({});
 
-                toast.success(active ? "Signup successful" : "Login successful");
-                navigate("/dashboard");
-            } else {
-                toast.info(response.data.message);
-            }
-        } catch (err) {
-            console.log(err);
-            toast.error(err.response?.data?.message || "Server error");
-        } finally {
-            setLoading(false);
-        }
-    };
+    try {
+      setLoading(true);
 
-//     const handleSubmit = (e) => {
-//     e.preventDefault();
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}api/auth/${
+          active ? "register" : "login"
+        }`,
+        formData
+      );
 
-//     // fake login user
-//     const dummyUser = {
-//         name: "Test User",
-//         email: "test@test.com"
-//     };
+      // ✅ LOGIN SUCCESS
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.userId);
+        localStorage.setItem("isLoggedIn", "true");
 
-//     localStorage.setItem("token", "dummy-token");
-//     localStorage.setItem("user", JSON.stringify(dummyUser));
+        toast.success(
+          active ? "Signup successful 🎉" : "Login successful 🚀"
+        );
 
-//     toast.success("Login bypassed (dev mode)");
-//     navigate("/plantrip");
-// };
+        navigate("/dashboard");
+      } else {
+        toast.info(response.data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(
+        err.response?.data?.message || "Something went wrong"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
-
-    return (
-        <div className="signUpWrapper appmain">
-            <div className="signup">
-                {/* <div className="logo">
-                    <a href="/">
-                        <img src={Logo} alt='Lost in Mountains'/>
-                    </a>
-                </div> */}
-
-                <form onSubmit={handleSubmit}>
-                    {active && (
-                        <div>
-                            <input 
-                                name="name" 
-                                type="text" 
-                                 autoComplete="off"
-                                placeholder="Full name" 
-                                onChange={handleChange} 
-                            />
-                            {errors.name && <p className="errors">{errors.name}</p>}
-                        </div>
-                    )}
-                    <div>
-                        <input 
-                            name="email" 
-                            type="email" 
-                             autoComplete="off"
-                            placeholder="Email" 
-                            onChange={handleChange} 
-                        />
-                        {errors.email && <p className="errors">{errors.email}</p>}
-                    </div>
-                    <div>
-                        <input 
-                            name="password" 
-                            type="password" 
-                             autoComplete="off"
-                            placeholder="Password" 
-                            onChange={handleChange} 
-                        />
-                        {errors.password && <p className="errors">{errors.password}</p>}
-                    </div>
-
-                    <button type="submit">
-                        {loading ? <ClipLoader size={20} color="#fff" /> : active ? "Sign Up" : "Login"}
-                    </button>
-                </form>
-
-                <p className="alternate">
-                    {active ? "Already have an account?" : "New to Lost in Mountains?"} 
-                    <span onClick={() => setActive(!active)}>
-                        {active ? " Login" : " Create account"}
-                    </span>
-                </p>
+  return (
+    <div className="signUpWrapper appmain">
+      <div className="signup">
+        <form onSubmit={handleSubmit}>
+          {/* NAME (Signup only) */}
+          {active && (
+            <div>
+              <input
+                name="name"
+                type="text"
+                placeholder="Full name"
+                autoComplete="off"
+                value={formData.name}
+                onChange={handleChange}
+              />
+              {errors.name && (
+                <p className="errors">{errors.name}</p>
+              )}
             </div>
-        </div>
-    );
+          )}
+
+          {/* EMAIL */}
+          <div>
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              autoComplete="off"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            {errors.email && (
+              <p className="errors">{errors.email}</p>
+            )}
+          </div>
+
+          {/* PASSWORD */}
+          <div>
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              autoComplete="off"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            {errors.password && (
+              <p className="errors">{errors.password}</p>
+            )}
+          </div>
+
+          {/* SUBMIT */}
+          <button type="submit" disabled={loading}>
+            {loading ? (
+              <ClipLoader size={18} color="#fff" />
+            ) : active ? (
+              "Sign Up"
+            ) : (
+              "Login"
+            )}
+          </button>
+        </form>
+
+        {/* TOGGLE */}
+        <p className="alternate">
+          {active
+            ? "Already have an account?"
+            : "New to TripMate?"}
+          <span onClick={() => setActive(!active)}>
+            {active ? " Login" : " Create account"}
+          </span>
+        </p>
+      </div>
+    </div>
+  );
 };

@@ -1,113 +1,118 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-import Tabs from "../Component/Tabs/Tabs";
 import Backarrow from "../Images/backarrow.png";
-import AddChecklist from "../Component/PopModals/AddChecklist";
-import TripmatesPop from "../Component/PopModals/TripmatesPop";
-
+import Tabs from "../Component/Tabs/Tabs";
 import "./PlanTrip.scss";
 import { formatDate, getDayCount } from "../utils/dateUtils";
 
 const TripCreated = () => {
-  const location = useLocation();
-  const { tripData } = location.state || {};
+  const { tripId } = useParams();
+  const navigate = useNavigate();
 
-  const tripId = tripData?.id || Date.now();
-  const startDate = tripData?.startDate;
-  const endDate = tripData?.endDate;
-  const dayCount = getDayCount(startDate, endDate);
+  // const reduxTripmates = useSelector(
+  //   (state) => state.tripmates.tripmates
+  // );
 
-  /* 🔹 Redux Tripmates */
-  const reduxTripmates = useSelector(
-    (state) => state.tripmates.tripmates
-  );
-
-  const [trip, setTrip] = useState({
-    id: tripId,
-    destination: tripData?.destination || "",
-    startDate: startDate || "",
-    endDate: endDate || "",
-    tripmates: tripData?.tripmates || [],
-    checklists: tripData?.checklists || [],
-  });
-
-  const [showAddChecklist, setShowAddChecklist] = useState(false);
-  const [showTripmatesPopup, setShowTripmatesPopup] = useState(false);
-
-  /* 🔹 3 DOT MENU STATE */
+  const [trip, setTrip] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
 
-  /* ---------------- LOAD TRIP FROM LOCALSTORAGE ---------------- */
+  /* 🔹 LOAD TRIP FROM USER-SPECIFIC STORAGE */
   useEffect(() => {
-    const savedTrips = JSON.parse(localStorage.getItem("trips")) || [];
-    const currentTrip = savedTrips.find((t) => t.id === tripId);
-    if (currentTrip) {
-      setTrip(currentTrip);
+    const userId = localStorage.getItem("userId");
+
+    if (!userId) {
+      navigate("/signup");
+      return;
     }
-  }, [tripId]);
 
-  /* ---------------- SAVE TRIP TO LOCALSTORAGE ---------------- */
-  useEffect(() => {
-    const savedTrips = JSON.parse(localStorage.getItem("trips")) || [];
-    const otherTrips = savedTrips.filter((t) => t.id !== tripId);
-    localStorage.setItem("trips", JSON.stringify([...otherTrips, trip]));
-  }, [trip, tripId]);
+    const savedTrips =
+      JSON.parse(localStorage.getItem(`trips_${userId}`)) || [];
 
-  /* ---------------- SYNC REDUX TRIPMATES ---------------- */
-  useEffect(() => {
-    if (reduxTripmates.length) {
-      setTrip((prev) => ({
-        ...prev,
-        tripmates: reduxTripmates,
-      }));
+    const currentTrip = savedTrips.find(
+      (t) => String(t.id) === String(tripId)
+    );
+
+    if (!currentTrip) {
+      navigate("/dashboard");
+      return;
     }
-  }, [reduxTripmates]);
 
-  /* ---------------- ADD CHECKLIST ---------------- */
-  const addChecklist = (name) => {
     setTrip({
-      ...trip,
-      checklists: [...trip.checklists, { name, items: [] }],
-    });
-  };
+  ...currentTrip,
+  tripmates: currentTrip.tripmates || [],
+  checklists: currentTrip.checklists || [],
+});
+  }, [tripId, navigate]);
 
-  /* ---------------- LOGOUT ---------------- */
+  /* 🔹 SAVE UPDATED TRIP */
+  useEffect(() => {
+    if (!trip) return;
+
+    const userId = localStorage.getItem("userId");
+    const savedTrips =
+      JSON.parse(localStorage.getItem(`trips_${userId}`)) || [];
+
+    const updatedTrips = savedTrips.map((t) =>
+      t.id === trip.id ? trip : t
+    );
+
+    localStorage.setItem(
+      `trips_${userId}`,
+      JSON.stringify(updatedTrips)
+    );
+  }, [trip]);
+
+  /* 🔹 SYNC REDUX TRIPMATES */
+  // useEffect(() => {
+  //   if (!trip) return;
+  //   if (!reduxTripmates.length) return;
+
+  //   setTrip((prev) => ({
+  //     ...prev,
+  //     tripmates: reduxTripmates,
+  //   }));
+  // }, [reduxTripmates]);
+
+  /* 🔹 LOGOUT */
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = "/";
+    navigate("/signup");
   };
+
+  if (!trip) return null;
+
+  const dayCount = getDayCount(trip.startDate, trip.endDate);
 
   return (
     <div className="container planatrip">
       {/* HEADER */}
       <div className="Head">
+        <Link to="/dashboard">
+            <img src={Backarrow} alt="Back" />
+          </Link>
         <div className="heading">
-          <h1>{trip.destination || "Trip"}</h1>
+          <h1>{trip.destination}</h1>
           <p>
-            {trip.startDate ? formatDate(trip.startDate) : "Sat, DD MM YYYY"} -{" "}
-            {trip.endDate ? formatDate(trip.endDate) : "Sat, DD MM YYYY"}
+            {formatDate(trip.startDate)} – {formatDate(trip.endDate)}
           </p>
           <p>
             ({dayCount} Nights / {dayCount + 1} Days)
           </p>
         </div>
 
-        {/* 🔹 3 DOT MENU */}
+        {/* MENU */}
         <div className="menu-wrapper">
           <span
             className="dots"
-            onClick={() => setShowMenu((prev) => !prev)}
+            onClick={() => setShowMenu(!showMenu)}
           >
             ⋮
           </span>
 
           {showMenu && (
             <div className="menu-dropdown">
-              <Link to="/profile" onClick={() => setShowMenu(false)}>
-                Profile
-              </Link>
+              <Link to="/profile">Profile</Link>
               <button onClick={handleLogout}>Logout</button>
             </div>
           )}
@@ -115,10 +120,7 @@ const TripCreated = () => {
       </div>
 
       {/* TABS */}
-      <Tabs tripData={trip} setTrip={setTrip}/>
-
-      {/* ADD CHECKLIST */}
-      
+      <Tabs tripData={trip} setTrip={setTrip} />
     </div>
   );
 };

@@ -9,13 +9,18 @@ const Dashboard = () => {
   const [trips, setTrips] = useState([]);
 
   useEffect(() => {
-    const savedTrips = JSON.parse(localStorage.getItem("trips")) || [];
-    setTrips(savedTrips);
-  }, []);
+  const userId = localStorage.getItem("userId");
+  const savedTrips =
+    JSON.parse(localStorage.getItem(`trips_${userId}`)) || [];
+
+  setTrips(savedTrips);
+}, []);
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
-    navigate("/login");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    navigate("/signup");
   };
 
   return (

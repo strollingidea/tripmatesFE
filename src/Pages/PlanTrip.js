@@ -1,167 +1,199 @@
-import React, { useRef, useState, useEffect } from 'react'
-import './PlanTrip.scss'
-import Backarrow from '../Images/backarrow.png'
-import { Link, useNavigate } from 'react-router-dom'
-import {useFormik} from 'formik'
-import { DetailsSchema } from '../Component/Schema/DetailsSchema'
-import TripmatesPop from '../Component/PopModals/TripmatesPop'
+import React, { useRef, useState, useEffect } from "react";
+import "./PlanTrip.scss";
+import Backarrow from "../Images/backarrow.png";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import { DetailsSchema } from "../Component/Schema/DetailsSchema";
+import TripmatesPop from "../Component/PopModals/TripmatesPop";
 import { useDispatch, useSelector } from "react-redux";
-import { removeTripmate } from '../redux/slices/removetripmateSlice'
-
+import { removeTripmate } from "../redux/slices/removetripmateSlice";
 
 const PlanTrip = () => {
-
   const dispatch = useDispatch();
-
-  const tripmates = useSelector((state) => state.tripmates.tripmates);
-
-  const [isPopupOpen, setIsPopupOpen ] = useState(false)
-  
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
   const inputRef = useRef();
 
-  const handlepopup =()=>{
-    setIsPopupOpen(!isPopupOpen)
-    }
+  const tripmates = useSelector((state) => state.tripmates.tripmates);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  let initialValues = {
-    destination : "",
+  const handlepopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
+
+  const initialValues = {
+    destination: "",
     startDate: "",
-    endDate:""
+    endDate: "",
+  };
 
-  }
-
-  let formik = useFormik({
+  const formik = useFormik({
     initialValues,
     validationSchema: DetailsSchema,
     onSubmit: (values) => {
-      console.log('Form submitted:', values);
-      const tripData = { ...values, tripmates };
-      localStorage.setItem('tripData', JSON.stringify(tripData));
-      navigate("/tripcreated", {state : {tripData:values , tripmates}})
-    }
+      const userId = localStorage.getItem("userId");
 
-  })
+      if (!userId) {
+        alert("User not logged in");
+        return;
+      }
 
-  let { values, handleSubmit } = formik;
+      const newTrip = {
+        id: Date.now(),
+        destination: values.destination,
+        startDate: values.startDate,
+        endDate: values.endDate,
+        tripmates,
+      };
 
+      // Get existing trips of this user
+      const existingTrips =
+        JSON.parse(localStorage.getItem(`trips_${userId}`)) || [];
+
+      // Add new trip
+      const updatedTrips = [...existingTrips, newTrip];
+
+      // Save back user-specific trips
+      localStorage.setItem(
+        `trips_${userId}`,
+        JSON.stringify(updatedTrips)
+      );
+
+      navigate("/dashboard");
+    },
+  });
+
+  const { values, handleSubmit } = formik;
+
+  // OPTIONAL: preload last trip of logged-in user
   useEffect(() => {
-    const savedData = localStorage.getItem('tripData');
-    if (savedData) {
-      formik.setValues(JSON.parse(savedData));
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
+    const savedTrips =
+      JSON.parse(localStorage.getItem(`trips_${userId}`)) || [];
+
+    if (savedTrips.length > 0) {
+      const lastTrip = savedTrips[savedTrips.length - 1];
+      formik.setValues({
+        destination: lastTrip.destination || "",
+        startDate: lastTrip.startDate || "",
+        endDate: lastTrip.endDate || "",
+      });
     }
   }, []);
 
-  let condition = !values?.destination.length || (Object.keys(formik.errors)).length !== 0
+  const condition =
+    !values.destination ||
+    Object.keys(formik.errors).length !== 0;
+
   return (
     <>
-      <div className='container planatrip'>
-        
-        <div className='Head'>
-            {/* <Link to="/">
-                <img src={Backarrow}/>
-            </Link> */}
-            <div className='heading'>
-                {/* <h1>Plan a Trip</h1> */}
-                <p>Build an itinerary and map out your upcoming plans</p>
-            </div>
-        </div>
-        <div className='inputdata'>
-            <input type='text' 
-            name='destination'
-            placeholder='Where To' 
-            value={values?.destination} 
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            />
-             {formik.touched.destination && formik.errors.destination ? (
-              <div>{formik.errors.destination}</div>
-              ) : null}
-            <div className="date-range-picker">
-                <label className="label">Dates (optional)</label>
-                <div className="date-inputs">
-                    <div className="date-input" style={{
-                      // borderRight:"1px solid #dfdfdf", 
-                      marginRight:"10px"}}>
-                        {/* <span className="calendar-icon">📅</span> */}
-                      <span className="date-text">
-                        <input
-                        name='startDate'
-                        ref={inputRef} 
-                        type='date'
-                        placeholder='Start Date'
-                        value={values?.startDate}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        // onClick={handleInput}
-                        />
-                      </span>
-                      '  {formik.touched.startDate && formik.errors.startDate ? (
-                            <div>{formik.errors.startDate}</div>
-                          ) : null}
-                    </div>
-                    <div className="date-input">
-                        {/* <span className="calendar-icon">📅</span> */}
-                      <span className="date-text">
-                        <input 
-                          name='endDate'
-                          type='date'
-                          placeholder='End Date'
-                          value={values?.endDate}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          min={values?.startDate}
-                        />
-                      </span>
-                      {formik.touched.endDate && formik.errors.endDate ? (
-                        <div>{formik.errors.endDate}</div>
-                      ) : null}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div className='tripmateslist'>
-          <div className="tripmateslist-heading">
-          <h2>Your Tripmates</h2>
-          <div className="addmembers">
-            <h2 onClick={() => handlepopup(true)}>
-              +
-            </h2>
+      <div className="container planatrip">
+        {/* HEADER */}
+        <div className="Head">
+          <Link to="/dashboard">
+            <img src={Backarrow} alt="Back" />
+          </Link>
+          <div className="heading">
+            <h1>Plan a Trip</h1>
+            <p>Build an itinerary and map out your upcoming plans</p>
           </div>
         </div>
-        {tripmates.length === 0 && (
-          <p className="no-tripmates">No tripmates added yet</p>
-        )}
-          {isPopupOpen && <TripmatesPop onClose = {handlepopup}/>  }
+
+        {/* INPUTS */}
+        <div className="inputdata">
+          <input
+            type="text"
+            name="destination"
+            placeholder="Where To"
+            value={values.destination}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.destination && formik.errors.destination && (
+            <div>{formik.errors.destination}</div>
+          )}
+
+          <div className="date-range-picker">
+            <label className="label">Dates (optional)</label>
+
+            <div className="date-inputs">
+              <div className="date-input" style={{ marginRight: "10px" }}>
+                <span className="date-text">
+                  <input
+                    name="startDate"
+                    ref={inputRef}
+                    type="date"
+                    value={values.startDate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </span>
+                {formik.touched.startDate &&
+                  formik.errors.startDate && (
+                    <div>{formik.errors.startDate}</div>
+                  )}
+              </div>
+
+              <div className="date-input">
+                <span className="date-text">
+                  <input
+                    name="endDate"
+                    type="date"
+                    value={values.endDate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    min={values.startDate}
+                  />
+                </span>
+                {formik.touched.endDate &&
+                  formik.errors.endDate && (
+                    <div>{formik.errors.endDate}</div>
+                  )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* TRIPMATES */}
+        <div className="tripmateslist">
+          <div className="tripmateslist-heading">
+            <h2>Your Tripmates</h2>
+            <div className="addmembers">
+              <h2 onClick={handlepopup}>+</h2>
+            </div>
+          </div>
+
+          {tripmates.length === 0 && (
+            <p className="no-tripmates">No tripmates added yet</p>
+          )}
+
+          {isPopupOpen && <TripmatesPop onClose={handlepopup} />}
+
           <ul>
-          {tripmates.map((mate, index) => (
+            {tripmates.map((mate, index) => (
               <li key={index}>
                 <div>
                   <h3>{mate.name}</h3>
                   <p>{mate.email}</p>
                 </div>
-                <h4 onClick={()=> dispatch(removeTripmate(index))}>Remove</h4>
+                <h4 onClick={() => dispatch(removeTripmate(index))}>
+                  Remove
+                </h4>
               </li>
             ))}
-            
           </ul>
         </div>
-        {console.log("Object.keys(values).length",formik.errors,Object.keys(formik.errors).length)}
 
-        <div className='floatctastart'>
-          <Link onClick={() => handleSubmit()} disabled={condition}>
+        {/* CTA */}
+        <div className="floatctastart">
+          <button onClick={handleSubmit} disabled={condition}>
             Create your trip
-          </Link>
-
-           {/* <button onClick={() => handleSubmit()} disabled={condition}>
-            Create your trip
-          </button> */}
+          </button>
         </div>
-
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PlanTrip
+export default PlanTrip;

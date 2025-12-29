@@ -1,27 +1,23 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { addTripmate } from "../../redux/slices/removetripmateSlice";
 
-const TripmatesPop = ({ onClose }) => {
-  const dispatch = useDispatch();
-
+const TripmatesPop = ({ onClose, onAdd }) => {
   const [newTripmate, setNewTripmate] = useState({
     name: "",
     email: "",
   });
 
   const handleAddTripmate = () => {
-    if (newTripmate.name.trim() && newTripmate.email.trim()) {
-      dispatch(addTripmate(newTripmate));
+    if (!newTripmate.name.trim() || !newTripmate.email.trim()) return;
 
-      setNewTripmate({
-        name: "",
-        email: "",
-      });
+    onAdd(newTripmate);
 
-      onClose();
-    }
+    setNewTripmate({
+      name: "",
+      email: "",
+    });
+
+    onClose();
   };
 
   return (
@@ -50,66 +46,56 @@ const TripmatesPop = ({ onClose }) => {
         Add Tripmate
       </TripmatesSubmit>
 
-      <div className="addmembers-popup-close" onClick={onClose}>
-        close
-      </div>
+      <CloseBtn onClick={onClose}>Close</CloseBtn>
     </TripmatespopDrawer>
   );
 };
 
 export default TripmatesPop;
 
-
-
-
-// Styled Components
+/* ---------------- STYLES ---------------- */
 
 const TripmatespopDrawer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #fff;
-    max-width: 480px;
-    position: fixed;
-    bottom: 0;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    padding: 0 20px 50px;
-    border-radius: 20px 20px 0 0;
-    box-shadow: 0px 0px 15px 5px #0000001a;
-    z-index: 999999;
-`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #fff;
+  max-width: 480px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  padding: 20px 20px 40px;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0px 0px 15px 5px #0000001a;
+  z-index: 9999;
+`;
 
 const DrawerHeading = styled.h5`
-    color: #000;
-    font-size: 18px;
-    font-weight: 500;
-    text-align: center;
-    padding-top: 10px;
-`
+  font-size: 18px;
+  text-align: center;
+`;
 
 const DrawerInput = styled.input`
-    padding: 20px;
-    border: 1px solid #cbcbcb;
-    border-radius: 5px;
-    background-color: #fff;
-    color: #000;
-    font-size: 18px;
-    font-weight: 500;
-    text-align: left;
-`
+  padding: 14px;
+  border: 1px solid #cbcbcb;
+  border-radius: 6px;
+  font-size: 16px;
+`;
 
-const TripmatesSubmit = styled.div`
-    padding: 10px;
-    border: 1px solid #c1c1c1;
-    background-color: #ffc300;
-    color: #000;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 6px;
-`
+const TripmatesSubmit = styled.button`
+  padding: 12px;
+  background-color: #ffc300;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+`;
 
-
+const CloseBtn = styled.button`
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+`;

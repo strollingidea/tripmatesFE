@@ -19,7 +19,8 @@ function App() {
             <Route path="/" element={<Homepage/>} />
             <Route path="/dashboard" element={<Dashboard/>} />
             <Route path="/plantrip" element={<PlanTrip />} />
-            <Route path="/tripcreated" element={<TripCreated />} />
+            {/* <Route path="/tripcreated" element={<TripCreated />} /> */}
+            <Route path="/trip/:tripId" element={<TripCreated />} />
             <Route path="/trip/:tripId/checklist/:checklistIndex" element={<ChecklistPage />} />
           </Routes>
         </Router>
