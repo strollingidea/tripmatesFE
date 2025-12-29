@@ -35,29 +35,18 @@ const Budget = () => {
   return (
     <>
       {/* 🔹 TAB HEADINGS (same heading class) */}
-      <div className="overview-checklists" style={{ marginTop: "10px" }}>
-        <div className="tripmateslist-heading">
-          <h2
-            style={{ cursor: "pointer", opacity: activeTab === "summary" ? 1 : 0.5 }}
-            onClick={() => setActiveTab("summary")}
-          >
-            Summary
-          </h2>
-
+      <div className="expenses-tabs">
           <h2
             style={{ cursor: "pointer", opacity: activeTab === "expenses" ? 1 : 0.5 }}
-            onClick={() => setActiveTab("expenses")}
-          >
+            onClick={() => setActiveTab("expenses")}>
             Expenses
           </h2>
-
-          {activeTab === "expenses" && (
-            <div className="addmembers">
-              <h2 onClick={() => setShowAddExpense(true)}>+</h2>
-            </div>
-          )}
+          <h2
+            style={{ cursor: "pointer", opacity: activeTab === "summary" ? 1 : 0.5 }}
+            onClick={() => setActiveTab("summary")}>
+            Summary
+          </h2>
         </div>
-      </div>
 
       {/* ================= SUMMARY TAB ================= */}
       {activeTab === "summary" && (
@@ -66,20 +55,20 @@ const Budget = () => {
             <div className="tripmate-expenses">
               <h2>Tripmate Expenses</h2>
               <ul>
-                {Object.entries(tripmateTotals).map(
-                  ([name, amount]) => (
-                    <li key={name}>
-                      <h3>{name}</h3>
-                      <h3>₹ {amount}</h3>
-                    </li>
-                  )
-                )}
+                {tripmates.map((mate) => (
+                  <li key={mate.id || mate.name}>
+                    <h3>{mate.name}</h3>
+                    <h3>₹ {tripmateTotals[mate.name] || 0}</h3>
+                  </li>
+                ))}
 
+                {/* 🔹 TOTAL */}
                 <li style={{ borderTop: "1px solid #ccc", marginTop: "8px" }}>
                   <h3>Total</h3>
                   <h3>₹ {totalExpense}</h3>
                 </li>
               </ul>
+
             </div>
           ) : (
             <p className="no-tripmates">No Expenses added yet</p>
@@ -93,7 +82,12 @@ const Budget = () => {
           {expenses.length === 0 && (
             <p className="no-tripmates">No Expenses added yet</p>
           )}
-
+          <div className="tripmateslist-heading">
+            <h2> Expenses List</h2>
+            <div className="addmembers">
+                <h2 onClick={() => setShowAddExpense(true)}>+</h2>
+              </div>
+          </div>
           <div className="expenses-list">
             <ul>
               {expenses.map((expense, index) => (

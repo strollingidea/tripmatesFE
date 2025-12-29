@@ -13,49 +13,38 @@ const ChecklistPage = () => {
 
   /* ---------------- LOAD TRIP ---------------- */
   useEffect(() => {
-    const savedTrips = JSON.parse(localStorage.getItem("trips")) || [];
+    const savedTrips =
+      JSON.parse(localStorage.getItem("trips")) || [];
     const currentTrip = savedTrips.find(
       (t) => String(t.id) === String(tripId)
     );
+
     if (currentTrip) {
       setTrip(currentTrip);
     }
   }, [tripId]);
 
-  /* ---------------- AUTO CREATE CHECKLIST ---------------- */
-  useEffect(() => {
-    if (!trip) return;
-
-    if (!trip.checklists[cIndex]) {
-      const updatedTrip = {
-        ...trip,
-        checklists: [
-          ...trip.checklists,
-          { name: `Checklist ${cIndex + 1}`, items: [] },
-        ],
-      };
-      setTrip(updatedTrip);
-    }
-  }, [trip, cIndex]);
-
   /* ---------------- SAVE TRIP ---------------- */
   useEffect(() => {
     if (!trip) return;
 
-    const savedTrips = JSON.parse(localStorage.getItem("trips")) || [];
+    const savedTrips =
+      JSON.parse(localStorage.getItem("trips")) || [];
     const otherTrips = savedTrips.filter(
       (t) => String(t.id) !== String(tripId)
     );
-    localStorage.setItem("trips", JSON.stringify([...otherTrips, trip]));
+
+    localStorage.setItem(
+      "trips",
+      JSON.stringify([...otherTrips, trip])
+    );
   }, [trip, tripId]);
 
-  if (!trip) {
-    return <p>Loading...</p>;
-  }
+  if (!trip) return <p>Loading...</p>;
 
-  /* ---------------- SAFE CHECKLIST ---------------- */
-  const checklist =
-    trip.checklists[cIndex] || { name: "Checklist", items: [] };
+  const checklist = trip.checklists?.[cIndex];
+
+  if (!checklist) return <p>Checklist not found</p>;
 
   /* ---------------- ADD ITEM ---------------- */
   const addItem = (text) => {
@@ -65,7 +54,10 @@ const ChecklistPage = () => {
         i === cIndex
           ? {
               ...cl,
-              items: [...cl.items, { text, completed: false }],
+              items: [
+                ...cl.items,
+                { text, completed: false },
+              ],
             }
           : cl
       ),
@@ -82,7 +74,10 @@ const ChecklistPage = () => {
               ...cl,
               items: cl.items.map((item, j) =>
                 j === iIndex
-                  ? { ...item, completed: !item.completed }
+                  ? {
+                      ...item,
+                      completed: !item.completed,
+                    }
                   : item
               ),
             }
@@ -100,7 +95,9 @@ const ChecklistPage = () => {
           ? {
               ...cl,
               items: cl.items.map((item, j) =>
-                j === iIndex ? { ...item, text: newText } : item
+                j === iIndex
+                  ? { ...item, text: newText }
+                  : item
               ),
             }
           : cl
@@ -116,7 +113,9 @@ const ChecklistPage = () => {
         i === cIndex
           ? {
               ...cl,
-              items: cl.items.filter((_, j) => j !== iIndex),
+              items: cl.items.filter(
+                (_, j) => j !== iIndex
+              ),
             }
           : cl
       ),
@@ -133,7 +132,7 @@ const ChecklistPage = () => {
         <h1>{checklist.name}</h1>
       </div>
 
-      {/* ADD ITEM BUTTON */}
+      {/* ADD ITEM */}
       <div className="floataddlist">
         <h2 onClick={() => setShowAddItem(true)}>
           +
@@ -158,7 +157,9 @@ const ChecklistPage = () => {
             <input
               type="checkbox"
               checked={item.completed}
-              onChange={() => toggleComplete(iIndex)}
+              onChange={() =>
+                toggleComplete(iIndex)
+              }
             />
 
             <input
@@ -167,10 +168,14 @@ const ChecklistPage = () => {
               onChange={(e) =>
                 editItem(iIndex, e.target.value)
               }
-              className={item.completed ? "completed" : ""}
+              className={
+                item.completed ? "completed" : ""
+              }
             />
 
-            <button onClick={() => removeItem(iIndex)}>
+            <button
+              onClick={() => removeItem(iIndex)}
+            >
               Remove
             </button>
           </li>

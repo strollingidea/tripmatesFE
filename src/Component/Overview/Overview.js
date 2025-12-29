@@ -3,10 +3,6 @@ import "./Overview.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeTripmate } from "../../redux/slices/removetripmateSlice";
-import {
-  addChecklistItem,
-  removeChecklistItem,
-} from "../../redux/slices/checklistSlice";
 import TripmatesPop from "../PopModals/TripmatesPop";
 import AddChecklist from "../PopModals/AddChecklist";
 
@@ -19,30 +15,55 @@ const Overview = ({ trip, setTrip, tripId }) => {
 
   /* ---------------- ADD CHECKLIST ---------------- */
   const addChecklist = (name) => {
-    setTrip((prev) => ({
-      ...prev,
-      checklists: [...prev.checklists, { name, items: [] }],
-    }));
+    setTrip((prev) => {
+      const updatedTrip = {
+        ...prev,
+        checklists: [...prev.checklists, { name, items: [] }],
+      };
 
-    // redux + localStorage
-    dispatch(addChecklistItem({ name, items: [] }));
+      const savedTrips =
+        JSON.parse(localStorage.getItem("trips")) || [];
+      const otherTrips = savedTrips.filter(
+        (t) => String(t.id) !== String(tripId)
+      );
+
+      localStorage.setItem(
+        "trips",
+        JSON.stringify([...otherTrips, updatedTrip])
+      );
+
+      return updatedTrip;
+    });
   };
 
   /* ---------------- REMOVE CHECKLIST ---------------- */
   const removeChecklist = (index) => {
-    // update local trip state
-    setTrip((prev) => ({
-      ...prev,
-      checklists: prev.checklists.filter((_, i) => i !== index),
-    }));
+    setTrip((prev) => {
+      const updatedTrip = {
+        ...prev,
+        checklists: prev.checklists.filter(
+          (_, i) => i !== index
+        ),
+      };
 
-    // update redux + localStorage
-    dispatch(removeChecklistItem(index));
+      const savedTrips =
+        JSON.parse(localStorage.getItem("trips")) || [];
+      const otherTrips = savedTrips.filter(
+        (t) => String(t.id) !== String(tripId)
+      );
+
+      localStorage.setItem(
+        "trips",
+        JSON.stringify([...otherTrips, updatedTrip])
+      );
+
+      return updatedTrip;
+    });
   };
 
   return (
     <>
-      {/* TRIPMATES */}
+      {/* ---------------- TRIPMATES ---------------- */}
       <div className="tripmateslist">
         <div className="tripmateslist-heading">
           <h2>Your Tripmates</h2>
@@ -54,7 +75,9 @@ const Overview = ({ trip, setTrip, tripId }) => {
         </div>
 
         {tripmates.length === 0 && (
-          <p className="no-tripmates">No tripmates added yet</p>
+          <p className="no-tripmates">
+            No tripmates added yet
+          </p>
         )}
 
         <ul>
@@ -64,21 +87,25 @@ const Overview = ({ trip, setTrip, tripId }) => {
                 <h3>{mate.name}</h3>
                 <p>{mate.email}</p>
               </div>
-              <h4 onClick={() => dispatch(removeTripmate(index))}>
+              <h4
+                onClick={() =>
+                  dispatch(removeTripmate(index))
+                }
+              >
                 Remove
               </h4>
             </li>
           ))}
         </ul>
 
-        
-
         {showTripmatesPopup && (
-          <TripmatesPop onClose={() => setShowTripmatesPopup(false)} />
+          <TripmatesPop
+            onClose={() => setShowTripmatesPopup(false)}
+          />
         )}
       </div>
 
-      {/* CHECKLISTS */}
+      {/* ---------------- CHECKLISTS ---------------- */}
       <div className="overview-checklists">
         <div className="tripmateslist-heading">
           <h2>Your Checklists</h2>
@@ -90,29 +117,39 @@ const Overview = ({ trip, setTrip, tripId }) => {
         </div>
 
         {trip?.checklists?.length === 0 && (
-          <p className="no-tripmates">No checklists added yet</p>
+          <p className="no-tripmates">
+            No checklists added yet
+          </p>
         )}
 
         <ul>
           {trip?.checklists?.map((checklist, index) => (
-            <li key={index} className="checklist-heading">
-              <Link to={`/trip/${tripId}/checklist/${index}`}>
+            <li
+              key={index}
+              className="checklist-heading"
+            >
+              <Link
+                to={`/trip/${tripId}/checklist/${index}`}
+              >
                 <h3>{checklist.name}</h3>
               </Link>
-              <h4 onClick={() => removeChecklist(index)}>
+              <h4
+                onClick={() =>
+                  removeChecklist(index)
+                }
+              >
                 Remove
               </h4>
             </li>
           ))}
         </ul>
 
-        {/* ADD CHECKLIST */}
-        
-
         {showAddChecklist && (
           <AddChecklist
             onAdd={addChecklist}
-            onClose={() => setShowAddChecklist(false)}
+            onClose={() =>
+              setShowAddChecklist(false)
+            }
           />
         )}
       </div>
