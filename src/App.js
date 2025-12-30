@@ -8,6 +8,7 @@ import store from './redux/store/store';
 import { SignUp } from './Component/signup/SignUp';
 import ChecklistPage from "./Pages/ChecklistPage";
 import Dashboard from './Pages/Dashboard';
+import ChecklistItems from './Pages/ChecklistItems';
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
             <Route path="/plantrip" element={<PlanTrip />} />
             {/* <Route path="/tripcreated" element={<TripCreated />} /> */}
             <Route path="/trip/:tripId" element={<TripCreated />} />
-            <Route path="/trip/:tripId/checklist/:checklistIndex" element={<ChecklistPage />} />
+            {/* <Route path="/trip/:tripId/checklist/:checklistIndex" element={<ChecklistPage />} /> */}
+            <Route path="/trip/:tripId/checklist/:index" element={<ChecklistItems />} />
           </Routes>
         </Router>
       </Provider>

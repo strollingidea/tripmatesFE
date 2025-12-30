@@ -1,0 +1,43 @@
+.checklist-ul {
+  margin-top: 20px;
+  padding: 0;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f9f9f9;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.checklist-item.dragging {
+  opacity: 0.5;
+}
+
+.drag-handle {
+  cursor: grab;
+  font-size: 18px;
+  user-select: none;
+}
+
+.checklist-item span.done {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.progress .bar {
+  height: 8px;
+  background: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress .bar div {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}

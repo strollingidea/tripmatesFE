@@ -8,18 +8,45 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
 
-  useEffect(() => {
   const userId = localStorage.getItem("userId");
-  const savedTrips =
-    JSON.parse(localStorage.getItem(`trips_${userId}`)) || [];
 
-  setTrips(savedTrips);
-}, []);
+  useEffect(() => {
+    if (!userId) {
+      navigate("/signup");
+      return;
+    }
+
+    const savedTrips =
+      JSON.parse(localStorage.getItem(`trips_${userId}`)) || [];
+
+    setTrips(savedTrips);
+  }, [userId, navigate]);
+
+  /* 🔴 DELETE TRIP */
+  const handleDeleteTrip = (e, tripId) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this trip?"
+    );
+
+    if (!confirmDelete) return;
+
+    const updatedTrips = trips.filter(
+      (trip) => String(trip.id) !== String(tripId)
+    );
+
+    localStorage.setItem(
+      `trips_${userId}`,
+      JSON.stringify(updatedTrips)
+    );
+
+    setTrips(updatedTrips);
+  };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+    localStorage.clear();
     navigate("/signup");
   };
 
@@ -59,6 +86,16 @@ const Dashboard = () => {
                 key={trip.id}
               >
                 <img src={TripImg} alt="Trip" />
+
+                {/* 🗑️ DELETE */}
+                <span
+                  className="delete-trip"
+                  onClick={(e) =>
+                    handleDeleteTrip(e, trip.id)
+                  }
+                >
+                  🗑️
+                </span>
 
                 <div className="trip-info">
                   <h3>{trip.destination}</h3>

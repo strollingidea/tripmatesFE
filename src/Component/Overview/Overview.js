@@ -6,17 +6,18 @@ import AddChecklist from "../PopModals/AddChecklist";
 
 const Overview = ({ trip, setTrip, tripId }) => {
   const [showTripmatesPopup, setShowTripmatesPopup] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
   const [showAddChecklist, setShowAddChecklist] = useState(false);
 
-  /* ---------------- ADD TRIPMATE ---------------- */
+  /* ➕ ADD TRIPMATE */
   const addTripmate = (mate) => {
     setTrip((prev) => ({
       ...prev,
-      tripmates: [...(prev.tripmates || []), mate],
+      tripmates: [...prev.tripmates, mate],
     }));
   };
 
-  /* ---------------- REMOVE TRIPMATE ---------------- */
+  /* ❌ REMOVE TRIPMATE */
   const removeTripmate = (index) => {
     setTrip((prev) => ({
       ...prev,
@@ -24,25 +25,20 @@ const Overview = ({ trip, setTrip, tripId }) => {
     }));
   };
 
-  /* ---------------- ADD CHECKLIST ---------------- */
-  const addChecklist = (name) => {
+  /* ✏️ UPDATE TRIPMATE */
+  const updateTripmate = (updatedMate) => {
     setTrip((prev) => ({
       ...prev,
-      checklists: [...prev.checklists, { name, items: [] }],
+      tripmates: prev.tripmates.map((mate, i) =>
+        i === editIndex ? updatedMate : mate
+      ),
     }));
-  };
-
-  /* ---------------- REMOVE CHECKLIST ---------------- */
-  const removeChecklist = (index) => {
-    setTrip((prev) => ({
-      ...prev,
-      checklists: prev.checklists.filter((_, i) => i !== index),
-    }));
+    setEditIndex(null);
   };
 
   return (
     <>
-      {/* ---------------- TRIPMATES ---------------- */}
+      {/* 👥 TRIPMATES */}
       <div className="tripmateslist">
         <div className="tripmateslist-heading">
           <h2>Your Tripmates</h2>
@@ -51,31 +47,55 @@ const Overview = ({ trip, setTrip, tripId }) => {
           </div>
         </div>
 
-        {(!trip.tripmates || trip.tripmates.length === 0) && (
+        {trip.tripmates.length === 0 && (
           <p className="no-tripmates">No tripmates added yet</p>
         )}
 
         <ul>
-          {trip.tripmates?.map((mate, index) => (
+          {trip.tripmates.map((mate, index) => (
             <li key={index}>
               <div>
                 <h3>{mate.name}</h3>
                 <p>{mate.email}</p>
               </div>
-              <h4 onClick={() => removeTripmate(index)}>Remove</h4>
+
+              <div className="tripmate-actions">
+                <span
+                  onClick={() => setEditIndex(index)}
+                  className="edit-btn"
+                >
+                  ✏️
+                </span>
+                <span
+                  onClick={() => removeTripmate(index)}
+                  className="remove-btn"
+                >
+                  Remove
+                </span>
+              </div>
             </li>
           ))}
         </ul>
 
+        {/* ADD */}
         {showTripmatesPopup && (
           <TripmatesPop
             onAdd={addTripmate}
             onClose={() => setShowTripmatesPopup(false)}
           />
         )}
+
+        {/* EDIT */}
+        {editIndex !== null && (
+          <TripmatesPop
+            initialData={trip.tripmates[editIndex]}
+            onAdd={updateTripmate}
+            onClose={() => setEditIndex(null)}
+          />
+        )}
       </div>
 
-      {/* ---------------- CHECKLISTS ---------------- */}
+      {/* 📦 CHECKLISTS */}
       <div className="overview-checklists">
         <div className="tripmateslist-heading">
           <h2>Your Checklists</h2>
@@ -84,7 +104,7 @@ const Overview = ({ trip, setTrip, tripId }) => {
           </div>
         </div>
 
-        {(!trip.checklists || trip.checklists.length === 0) && (
+        {trip.checklists.length === 0 && (
           <p className="no-tripmates">No checklists added yet</p>
         )}
 
@@ -94,14 +114,18 @@ const Overview = ({ trip, setTrip, tripId }) => {
               <Link to={`/trip/${tripId}/checklist/${index}`}>
                 <h3>{checklist.name}</h3>
               </Link>
-              <h4 onClick={() => removeChecklist(index)}>Remove</h4>
             </li>
           ))}
         </ul>
 
         {showAddChecklist && (
           <AddChecklist
-            onAdd={addChecklist}
+            onAdd={(name) =>
+              setTrip((prev) => ({
+                ...prev,
+                checklists: [...prev.checklists, { name, items: [] }],
+              }))
+            }
             onClose={() => setShowAddChecklist(false)}
           />
         )}

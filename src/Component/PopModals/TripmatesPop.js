@@ -1,101 +1,94 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-const TripmatesPop = ({ onClose, onAdd }) => {
-  const [newTripmate, setNewTripmate] = useState({
+const TripmatesPop = ({ onClose, onAdd, initialData }) => {
+  const [tripmate, setTripmate] = useState({
     name: "",
     email: "",
   });
 
-  const handleAddTripmate = () => {
-    if (!newTripmate.name.trim() || !newTripmate.email.trim()) return;
+  useEffect(() => {
+    if (initialData) {
+      setTripmate(initialData);
+    }
+  }, [initialData]);
 
-    onAdd(newTripmate);
-
-    setNewTripmate({
-      name: "",
-      email: "",
-    });
-
+  const handleSubmit = () => {
+    if (!tripmate.name.trim() || !tripmate.email.trim()) return;
+    onAdd(tripmate);
     onClose();
   };
 
   return (
     <TripmatespopDrawer>
-      <DrawerHeading>Add Tripmates</DrawerHeading>
+      <DrawerHeading>
+        {initialData ? "Edit Tripmate" : "Add Tripmate"}
+      </DrawerHeading>
 
       <DrawerInput
-        type="text"
         placeholder="Tripmate Name"
-        value={newTripmate.name}
+        value={tripmate.name}
         onChange={(e) =>
-          setNewTripmate({ ...newTripmate, name: e.target.value })
+          setTripmate({ ...tripmate, name: e.target.value })
         }
       />
 
       <DrawerInput
-        type="email"
         placeholder="Tripmate Email"
-        value={newTripmate.email}
+        value={tripmate.email}
         onChange={(e) =>
-          setNewTripmate({ ...newTripmate, email: e.target.value })
+          setTripmate({ ...tripmate, email: e.target.value })
         }
       />
 
-      <TripmatesSubmit onClick={handleAddTripmate}>
-        Add Tripmate
+      <TripmatesSubmit onClick={handleSubmit}>
+        {initialData ? "Update" : "Add"}
       </TripmatesSubmit>
 
-      <CloseBtn onClick={onClose}>Close</CloseBtn>
+      <div className="addmembers-popup-close" onClick={onClose}>
+        close
+      </div>
     </TripmatespopDrawer>
   );
 };
 
 export default TripmatesPop;
 
-/* ---------------- STYLES ---------------- */
-
+/* ✅ SAME STYLES */
 const TripmatespopDrawer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   background-color: #fff;
   max-width: 480px;
   position: fixed;
   bottom: 0;
+  margin: 0 auto;
   left: 0;
   right: 0;
-  margin: 0 auto;
-  padding: 20px 20px 40px;
+  padding: 0 20px 50px;
   border-radius: 20px 20px 0 0;
   box-shadow: 0px 0px 15px 5px #0000001a;
-  z-index: 9999;
+  z-index: 999999;
 `;
 
 const DrawerHeading = styled.h5`
   font-size: 18px;
   text-align: center;
+  padding-top: 10px;
 `;
 
 const DrawerInput = styled.input`
-  padding: 14px;
+  padding: 20px;
   border: 1px solid #cbcbcb;
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: 5px;
+  font-size: 18px;
 `;
 
-const TripmatesSubmit = styled.button`
-  padding: 12px;
+const TripmatesSubmit = styled.div`
+  padding: 10px;
   background-color: #ffc300;
-  border: none;
+  text-align: center;
+  cursor: pointer;
   border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-`;
-
-const CloseBtn = styled.button`
-  background: none;
-  border: none;
-  color: #555;
-  cursor: pointer;
 `;

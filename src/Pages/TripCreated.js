@@ -120,7 +120,7 @@ const TripCreated = () => {
       </div>
 
       {/* TABS */}
-      <Tabs tripData={trip} setTrip={setTrip} />
+      <Tabs tripData={trip} setTrip={setTrip} key={trip.id}/>
     </div>
   );
 };
