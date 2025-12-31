@@ -7,6 +7,7 @@ import { DetailsSchema } from "../Component/Schema/DetailsSchema";
 import TripmatesPop from "../Component/PopModals/TripmatesPop";
 import { useDispatch, useSelector } from "react-redux";
 import { removeTripmate } from "../redux/slices/removetripmateSlice";
+import axios from "axios";
 
 const PlanTrip = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const PlanTrip = () => {
   const tripmates = useSelector((state) => state.tripmates.tripmates);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const handlepopup = () => {
+  const handlepopup = async() => {
     setIsPopupOpen(!isPopupOpen);
   };
 
@@ -30,7 +31,8 @@ const PlanTrip = () => {
     initialValues,
     validationSchema: DetailsSchema,
     onSubmit: (values) => {
-      const userId = localStorage.getItem("userId");
+     try {
+       const userId = localStorage.getItem("userId");
 
       if (!userId) {
         alert("User not logged in");
@@ -44,6 +46,9 @@ const PlanTrip = () => {
         endDate: values.endDate,
         tripmates,
       };
+
+     axios.post(`${process.env.REACT_APP_BACKEND_URL}api/trips/create`, newTrip);
+     console.log("API CREATE gfbhgfhgkhbgkhkhkhgshgkrhgrtkrkhkrtghtr")
 
       // Get existing trips of this user
       const existingTrips =
@@ -59,6 +64,9 @@ const PlanTrip = () => {
       );
 
       navigate("/dashboard");
+     } catch (error) {
+        console.error("Error creating trip:", error);
+     }
     },
   });
 

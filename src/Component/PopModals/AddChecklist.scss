@@ -33,6 +33,22 @@
     width: 100%;
     background: transparent;
   }
+  select{
+    border: 1px solid #d1d1d1;
+    color: #333030;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 6px;
+    width: 100%;
+    background: transparent;
+  }
+  input:focus-visible {
+    outline: none !important;
+  }
+  select:focus-visible {
+    outline: none !important;
+  }
   .popup-buttons{
     h3{
       padding: 8px;
